@@ -14,7 +14,6 @@ import sys
 # According to scrm, and we follow the convention here, a locus is
 # a physical region which  might contain various snp.
 def transcode(infile: str, outfile: str, nb_individual: int):
-    print(f'n = {nb_individual}')
     with open(infile) as f:
         data = f.readlines()
 

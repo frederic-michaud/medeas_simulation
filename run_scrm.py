@@ -12,8 +12,7 @@ from subprocess import Popen, PIPE
 
 
 scrm_command = sys.argv[1]
-folder = sys.argv[2]
-scrm_file_raw_result = os.path.join(folder, '_tmp_out.txt')
+scrm_file_raw_result = sys.argv[2]
 
 def run_scrm(scrm_command: str):
     scrm_exec = "scrm"

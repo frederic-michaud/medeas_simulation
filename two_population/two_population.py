@@ -7,31 +7,66 @@ Created on Thu Sep 13 17:03:27 2018
 """
 
 from subprocess import Popen
+import os
+import numpy as np
 
-folder = "hello"
-def run_simulation_two_pops(n1: int, n2: int, L: int, theta: float, D: float):
-    # run scrm  for simulations
+
+def run_simulation_two_pops(n1: int, n2: int, L: int, theta: float, D: float,output_folder):
+
+    current_folder = os.path.dirname(os.path.realpath(__file__))
+    script_folder = os.path.split(current_folder)[0]
+
+    scrm_result = os.path.join(output_folder,'scrm.txt')
+    location_run_scrm = os.path.join(script_folder, "run_scrm.py")
     scrm_command = f'{n1+n2} {L} -t {theta} -I 2 {n1} {n2} -ej {D} 1 2 --print-model -l -1 -L'
-    run_scrm = Popen(['python','/Users/fmichaud/PycharmProjects/medeas_simulations/run_scrm.py',  scrm_command,folder])
+    run_scrm = Popen(['python', location_run_scrm, scrm_command, scrm_result])
     run_scrm.communicate()
 
-    snip_file = '/Users/fmichaud/PycharmProjects/medeas_simulations/two_population/hello/output.txt'
-    transcode = Popen(['python','/Users/fmichaud/PycharmProjects/medeas_simulations/transcode.py', "hello/_tmp_out.txt", snip_file,str(n1+n2)])
+    snip_file = os.path.join(output_folder,'snip.txt')
+    location_transcode = os.path.join(script_folder, "transcode.py")
+    transcode_commande = f'python {location_transcode} {scrm_result} {snip_file} {n1+n2}'
+    print(transcode_commande)
+    transcode = Popen(transcode_commande.split())
     transcode.communicate()
 
-    label_file = '/Users/fmichaud/PycharmProjects/medeas_simulations/two_population/hello/fake_labs.txt'
-    command = " ".join(['python', '/Users/fmichaud/PycharmProjects/medeas_simulations/create_fake_labels.py', '-of', label_file, '-ps', str(n1), str(n2)])
-    print(command)
-    create_label = Popen(command.split())
+    location_create_fake_label = os.path.join(script_folder, "create_fake_labels.py")
+    label_file = os.path.join(output_folder,'fake_labs.txt')
+    fake_label_command = " ".join(['python', location_create_fake_label, '-of', label_file, '-ps', str(n1), str(n2)])
+    print(fake_label_command)
+    create_label = Popen(fake_label_command.split())
     create_label.communicate()
 
+    location_run_medeas = os.path.join(script_folder, "run_medeas.py")
+    K = 2
+    nb_boot_window = 50
+    bootwindow = int(L/nb_boot_window)
+    command = " ".join(['python',location_run_medeas, snip_file,label_file,output_folder,str(K),str(bootwindow)])
+    print(command)
+    medeas = Popen(command.split())
+    medeas.communicate()
 
 
-    output_folder = '/Users/fmichaud/PycharmProjects/medeas_simulations/two_population/hello/'
-    transcode = Popen(['python','/Users/fmichaud/PycharmProjects/medeas_simulations/run_medeas.py', snip_file,label_file,output_folder])
-    transcode.communicate()
-
-Ls = [2000]
-D = 0.2
+Ls = [int(10**(i/4)) for i in range(7,21)] #regulary space with 4 point between each order of magnitude
+Ds = [0.01, 0.1]
+sample_size = 100
+current_folder = os.path.dirname(os.path.realpath(__file__))
+simulation_subfolder = "convergence_speed"
 for L in Ls:
-    run_simulation_two_pops(25, 25, int(L), 2, D)
+    for D in Ds:
+        distance_summary_file = f'all_distance/L_{L}_D_{D}.dat'
+        summary_file = open(distance_summary_file,"w")
+        for _ in range(sample_size):
+
+            simulation_subsubfolder = f'L_{L}_D_{D}'
+            output_folder = os.path.join(current_folder, simulation_subfolder,simulation_subsubfolder)
+            if not os.path.exists(output_folder):
+                os.makedirs(output_folder)
+            run_simulation_two_pops(20, 20, int(L), 2, D,output_folder)
+
+            distance_file = os.path.join(output_folder,"all_extrapolated_distances.txt")
+            distances  = np.loadtxt(distance_file)
+            distance = np.mean(distances)
+            sd = np.std(distances)
+            summary_file.write(f'{distance} {sd} \n')
+        summary_file.close()
+
