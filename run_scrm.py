@@ -17,6 +17,7 @@ scrm_file_raw_result = sys.argv[2]
 def run_scrm(scrm_command: str):
     scrm_exec = "scrm"
     full_command = scrm_exec + " " + scrm_command
+    print(full_command)
     scrm = Popen(full_command.split(' '), stdout=PIPE)
     grep = Popen(['grep',  rb'^[0-9]*$'], stdin=scrm.stdout, stdout=PIPE)
     scrm.stdout.close()
