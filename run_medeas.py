@@ -16,14 +16,16 @@ def run_medeas(medeas_exec: str,
                label_file: str,
                output_folder: str,
                K: int,
-               bootsize: int):
+               bootsize: int,
+               outgroup: str
+               ):
 
     command = " ".join(['python',medeas_exec,
                     '--simulation',
                     ' -sf', snip_file,
                     '-lf',label_file,
-                    '--folder',output_folder,
-                    '--outgroup','pop0',
+                    '--output_folder',output_folder,
+                    '--outgroup',outgroup,
                     '-K',K,
                     '-bws', bootsize
                     ])
@@ -35,9 +37,13 @@ snip_file = sys.argv[1]
 label_file = sys.argv[2]
 output_folder = sys.argv[3]
 K = 0
+bootsize = 10
+outgroup = "pop0"
 if len(sys.argv) > 4:
     K = sys.argv[4]
 if len(sys.argv) > 5:
     bootsize = sys.argv[5]
+if len(sys.argv) > 6:
+    outgroup = sys.argv[6]
 
-run_medeas(medeas_exec,snip_file, label_file,output_folder,K,bootsize)
+run_medeas(medeas_exec,snip_file, label_file,output_folder,K,bootsize,outgroup)
