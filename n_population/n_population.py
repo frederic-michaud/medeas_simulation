@@ -43,14 +43,14 @@ def run_simulation_n_pops(n_pop : int,n_individual_per_pop: int, L: int,
     K = n_pop
     nb_boot_window = 50
     bootwindow = int(L/nb_boot_window)
-    command = " ".join(['python',location_run_medeas, snip_file,label_file,output_folder,str(K),str(bootwindow)])
+    command = " ".join(['python',location_run_medeas, snip_file,label_file,output_folder,str(K),str(bootwindow),f'pop{n_pop-1}'])
     print(command)
     medeas = Popen(command.split())
     medeas.communicate()
 
 
 
-Ls = [int(10**(i/4)) for i in range(14,21)] #regulary space with 4 point between each order of magnitude
+Ls = [int(10**(i/4)) for i in range(8,21)] #regulary space with 4 point between each order of magnitude
 Ks = [2,3,4,5,6]
 n_individual_per_pop = 15
 theta = 2
