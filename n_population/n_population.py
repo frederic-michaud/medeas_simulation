@@ -50,12 +50,12 @@ def run_simulation_n_pops(n_pop : int,n_individual_per_pop: int, L: int,
 
 
 
-Ls = [int(10**(i/4)) for i in range(8,21)] #regulary space with 4 point between each order of magnitude
+Ls = [int(10**(i/4)) for i in range(21,25)] #regulary space with 4 point between each order of magnitude
 Ks = [2,3,4,5,6]
 n_individual_per_pop = 15
 theta = 2
 sample_size = 25
-D = 0.05
+D = 0.005
 current_folder = os.path.dirname(os.path.realpath(__file__))
 simulation_subfolder = "convergence_speed"
 if not os.path.exists(simulation_subfolder):

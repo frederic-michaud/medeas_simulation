@@ -46,7 +46,8 @@ def run_simulation_single_pop(n: int, L: int, theta: float, output_folder):
     medeas.communicate()
 
 
-Ls = [int(10**(i/4)) for i in range(12,21)] #regulary space with 4 point between each order of magnitude
+Ls = [int(10**(i/4)) for i in range(12,13)] #regulary space with 4 point between each order of magnitude
+Ls = [1000]
 current_folder = os.path.dirname(os.path.realpath(__file__))
 simulation_subfolder = "simplex"
 for L in Ls:
