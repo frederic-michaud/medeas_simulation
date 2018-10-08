@@ -45,30 +45,35 @@ def run_simulation_single_pop(n: int, L: int, theta: float, output_folder):
     print(command)
     medeas = Popen(command.split(),stdout=subprocess.PIPE)
     output = medeas.communicate()
+    toprint = output[0].splitlines()
+    for line in toprint:
+        print(line)
     return(output[0])
 
 
-Ls = [1000]
+Ls = [100,200,500,1000,5000,10000,20000,50000]
+ns = [100]
 current_folder = os.path.dirname(os.path.realpath(__file__))
 nb_replicate = 1000
-simulation_subfolder = "tracy_widom"
+simulation_subfolder = "tracy_widom_patterson"
 for L in Ls:
-    simulation_subsubfolder = f'L_{L}'
-    output_folder = os.path.join(current_folder, simulation_subfolder, simulation_subsubfolder)
-    if not os.path.exists(output_folder):
-        os.makedirs(output_folder)
-    all_vector = []
-    f1 = open(os.path.join(output_folder, "tracy_widom.dat"), "w")
-    for index_replicate in range(nb_replicate):
-        print(f'replicate {index_replicate}')
-        theta = 2
-        n = 50
-        stdout = run_simulation_single_pop(n, L, theta, output_folder)
-        stdout = stdout.splitlines()
-        for line in stdout:
-            if re.search("TW",line.decode()):
-                f1.write(line.decode())
-                f1.write("\n")
-                f1.flush()
+    for n in ns:
+        simulation_subsubfolder = f'L_{L}N_{n}'
+        output_folder = os.path.join(current_folder, simulation_subfolder, simulation_subsubfolder)
+        if not os.path.exists(output_folder):
+            os.makedirs(output_folder)
+        all_vector = []
+        f1 = open(os.path.join(output_folder, "tracy_widom.dat"), "a")
+        for index_replicate in range(nb_replicate):
+            print(f'replicate {index_replicate}')
+            theta = 2
 
-    f1.close()
+            stdout = run_simulation_single_pop(n, L, theta, output_folder)
+            stdout = stdout.splitlines()
+            for line in stdout:
+                if re.search("TW",line.decode()):
+                    f1.write(line.decode())
+                    f1.write("\n")
+                    f1.flush()
+
+        f1.close()
