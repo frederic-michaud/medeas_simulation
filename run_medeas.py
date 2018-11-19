@@ -25,9 +25,9 @@ def run_medeas(medeas_exec: str,
                     ' -sf', snip_file,
                     '-lf',label_file,
                     '--output_folder',output_folder,
-                    '--outgroup',outgroup,
                     '-K',K,
-                    '-bws', bootsize
+                    '-bws', bootsize,
+                    '-bsn','100'
                     ])
     print(command)
     medeas = Popen(command.split())
@@ -37,13 +37,11 @@ snip_file = sys.argv[1]
 label_file = sys.argv[2]
 output_folder = sys.argv[3]
 K = 0
-bootsize = 10
-outgroup = "pop0"
+bootsize = 100
+outgroup = "pop0 pop1"
 if len(sys.argv) > 4:
     K = sys.argv[4]
 if len(sys.argv) > 5:
     bootsize = sys.argv[5]
-if len(sys.argv) > 6:
-    outgroup = sys.argv[6]
 
 run_medeas(medeas_exec,snip_file, label_file,output_folder,K,bootsize,outgroup)
