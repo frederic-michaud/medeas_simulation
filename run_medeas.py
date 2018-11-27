@@ -37,7 +37,7 @@ snip_file = sys.argv[1]
 label_file = sys.argv[2]
 output_folder = sys.argv[3]
 K = 0
-bootsize = 100
+bootsize = 10
 outgroup = "pop0 pop1"
 if len(sys.argv) > 4:
     K = sys.argv[4]

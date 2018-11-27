@@ -29,20 +29,20 @@ def transcode(infile: str, outfile: str, nb_individual: int):
     with open(outfile, 'w') as f:
         count_loci = 0
         for locus in loci:
-            #for snp in range(len(locus[0])):
-            snp = 0
-            listsnp = [locus[individual][snp] for individual in range(nb_individual)]
-            listint = list(map(int, listsnp))
-            nb_polymorphism = sum(listint)
-            #if nb_polymorphism > 5 and nb_polymorphism < 20: #always true, but allow to remove singleton or doublon easly
-            if nb_polymorphism > 0:  # always true, but allow to remove singleton or doublon easly
-                count_loci = count_loci +1
-                for individual in range(nb_individual):
-                    s = locus[individual][snp]
-                    f.write(str(int(s) + 1))
-                    if individual < nb_individual - 1:
-                        f.write(' ')
-                f.write('\n')
+            for snp in range(len(locus[0])):
+            #snp = 0
+                listsnp = [locus[individual][snp] for individual in range(nb_individual)]
+                listint = list(map(int, listsnp))
+                nb_polymorphism = sum(listint)
+                #if nb_polymorphism > 5 and nb_polymorphism < 20: #always true, but allow to remove singleton or doublon easly
+                if nb_polymorphism > 0:  # always true, but allow to remove singleton or doublon easly
+                    count_loci = count_loci + 1
+                    for individual in range(nb_individual):
+                        s = locus[individual][snp]
+                        f.write(str(int(s) + 1))
+                        if individual < nb_individual - 1:
+                            f.write(' ')
+                    f.write('\n')
     print(f'nb of polymorph loci: {count_loci}')
 
 infile = sys.argv[1]
