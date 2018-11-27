@@ -46,12 +46,13 @@ def run_simulation_two_pops(n1: int, n2: int, L: int, theta: float, D: float,out
     medeas.communicate()
 
 
-Ls = [int(10**(i/4)) for i in range(12,13)] #regulary space with 4 point between each order of magnitude
-Ds = [0.01, 0.1]
-sample_size = 10
+Ls = [10000]
+Ds = np.array([10**(-i/4+1) for i in range(4,10)])
+Ds = np.array([0.001])
+sample_size = 50
 current_folder = os.path.dirname(os.path.realpath(__file__))
-simulation_subfolder = "supp"
-result_subfolder = "all_distance"
+simulation_subfolder = "convergence_various_D"
+result_subfolder = "all_distance_D"
 result_subfolder_fullpath = os.path.join(current_folder,result_subfolder)
 if not os.path.exists(result_subfolder_fullpath):
     os.makedirs(result_subfolder_fullpath)
