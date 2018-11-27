@@ -24,7 +24,7 @@ def run_simulation_three_pops(n1: int, n2: int, n3: int, L: int, theta: float, D
 
     snip_file = os.path.join(output_folder,'snip.txt')
     location_transcode = os.path.join(script_folder, "transcode.py")
-    transcode_commande = f'python {location_transcode} {scrm_result} {snip_file} {n1+n2+n2}'
+    transcode_commande = f'python {location_transcode} {scrm_result} {snip_file} {n1+n2+n3}'
     print(transcode_commande)
     transcode = Popen(transcode_commande.split())
     transcode.communicate()
@@ -47,31 +47,61 @@ def run_simulation_three_pops(n1: int, n2: int, n3: int, L: int, theta: float, D
 
 
 
-Ls = [int(10**(i/4)) for i in range(7,21)] #regulary space with 4 point between each order of magnitude
-D1 = 0.01
+# Ls = [int(10**(i/4)) for i in range(16,17)] #regulary space with 4 point between each order of magnitude
+# D1 = 0.1
+# D2 = 0.2
+# n1 = n2 = n3 = 25
+# theta = 2
+# sample_size = 100
+# current_folder = os.path.dirname(os.path.realpath(__file__))
+# simulation_subfolder = "convergence_speed_bis"
+# if not os.path.exists(simulation_subfolder):
+#     os.mkdir(simulation_subfolder)
+# if not os.path.exists("all_distance_bis"):
+#     os.mkdir("all_distance_bis")
+# for L in Ls:
+#     distance_summary_file = f'all_distance_bis/L_{L}.dat'
+#     summary_file = open(distance_summary_file,"w")
+#     for _ in range(sample_size):
+#         simulation_subsubfolder = f'L_{L}'
+#         output_folder = os.path.join(current_folder, simulation_subfolder,simulation_subsubfolder)
+#         if not os.path.exists(output_folder):
+#             os.makedirs(output_folder)
+#         run_simulation_three_pops(n1, n2, n3, L, theta, D1, D2, output_folder)
+#         distance_file = os.path.join(output_folder,"all_extrapolated_distances.txt")
+#         distances  = np.loadtxt(distance_file)
+#         distance1 = np.mean(distances[:,0])
+#         distance2 = np.mean(distances[:, 1])
+#         summary_file.write(f'{distance1} {distance2} \n')
+#         summary_file.flush()
+#     summary_file.close()
+
+
+L = 10000
+D1 = 0.05
 D2 = 0.1
-n1 = n2 = n3 = 20
-theta = 2
-sample_size = 100
+n1 = 50
+n2 = 100
+n3 = 150
+theta = 1
 current_folder = os.path.dirname(os.path.realpath(__file__))
-simulation_subfolder = "convergence_speed"
+simulation_subfolder = "degenerate_sol"
 if not os.path.exists(simulation_subfolder):
     os.mkdir(simulation_subfolder)
-if not os.path.exists("all_distance"):
-    os.mkdir("all_distance")
-for L in Ls:
-    distance_summary_file = f'all_distance/L_{L}.dat'
-    summary_file = open(distance_summary_file,"w")
-    for _ in range(sample_size):
-        simulation_subsubfolder = f'L_{L}'
-        output_folder = os.path.join(current_folder, simulation_subfolder,simulation_subsubfolder)
-        if not os.path.exists(output_folder):
-            os.makedirs(output_folder)
-        run_simulation_three_pops(n1, n2, n3, L, theta, D1, D2, output_folder)
-        distance_file = os.path.join(output_folder,"all_extrapolated_distances.txt")
-        distances  = np.loadtxt(distance_file)
-        distance1 = np.mean(distances[:,0])
-        distance2 = np.mean(distances[:, 1])
-        summary_file.write(f'{distance1} {distance2} \n')
-    summary_file.close()
+if not os.path.exists("degenerate_sol"):
+    os.mkdir("degenerate_sol")
 
+distance_summary_file = f'degenerate_sol/degenerate_sol.dat'
+summary_file = open(distance_summary_file,"w")
+simulation_subsubfolder = f'L_{L}'
+output_folder = os.path.join(current_folder, simulation_subfolder,simulation_subsubfolder)
+if not os.path.exists(output_folder):
+    os.makedirs(output_folder)
+run_simulation_three_pops(n1, n2, n3, L, theta, D1, D2, output_folder)
+distance_file = os.path.join(output_folder,"all_extrapolated_distances.txt")
+distances  = np.loadtxt(distance_file)
+distance1 = np.mean(distances[:,0])
+distance2 = np.mean(distances[:, 1])
+summary_file.write(f'{distance1} {distance2} \n')
+summary_file.flush()
+summary_file.close()
