@@ -46,30 +46,28 @@ def run_simulation_two_pops(n1: int, n2: int, L: int, theta: float, D: float,out
     medeas.communicate()
 
 
-Ls = [int(10**(i/4)) for i in range(12,13)] #regulary space with 4 point between each order of magnitude
+Ls = [int(10**(i/4)) for i in range(8, 20)] #regulary space with 4 point between each order of magnitude
 Ds = [0.01, 0.1]
-sample_size = 10
+sample_size = 100
 current_folder = os.path.dirname(os.path.realpath(__file__))
-simulation_subfolder = "supp"
-result_subfolder = "all_distance"
-result_subfolder_fullpath = os.path.join(current_folder,result_subfolder)
+simulation_subfolder = "convergence_various_L"
+result_subfolder_fullpath = os.path.join(current_folder, simulation_subfolder)
 if not os.path.exists(result_subfolder_fullpath):
     os.makedirs(result_subfolder_fullpath)
 for L in Ls:
     for D in Ds:
-        distance_summary_file = os.path.join(result_subfolder_fullpath,f'L_{L}_D_{D}.dat')
-        summary_file = open(distance_summary_file,"w")
+        distance_summary_file = os.path.join(result_subfolder_fullpath, f'L_{L}_D_{D}.dat')
+        summary_file = open(distance_summary_file, "w")
         for _ in range(sample_size):
-
             simulation_subsubfolder = f'L_{L}_D_{D}'
-            output_folder = os.path.join(current_folder, simulation_subfolder,simulation_subsubfolder)
+            output_folder = os.path.join(current_folder, simulation_subfolder, simulation_subsubfolder)
             if not os.path.exists(output_folder):
                 os.makedirs(output_folder)
             n1 = 20
             n2 = 20
             run_simulation_two_pops(n1, n2, int(L), 2, D,output_folder)
 
-            distance_file = os.path.join(output_folder,"all_extrapolated_distances.txt")
+            distance_file = os.path.join(output_folder, "all_extrapolated_distances.txt")
             distance = 0
             sd = 0
             if os.path.isfile(distance_file):
