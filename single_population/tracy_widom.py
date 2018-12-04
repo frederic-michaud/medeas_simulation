@@ -53,9 +53,10 @@ def run_simulation_single_pop(n: int, L: int, theta: float, output_folder):
 
 Ls = [100,200,500,1000,5000,10000,20000,50000]
 ns = [100]
+Ls = [5000]
 current_folder = os.path.dirname(os.path.realpath(__file__))
 nb_replicate = 1000
-simulation_subfolder = "tracy_widom_patterson"
+simulation_subfolder = "tracy_widom"
 for L in Ls:
     for n in ns:
         simulation_subsubfolder = f'L_{L}N_{n}'
