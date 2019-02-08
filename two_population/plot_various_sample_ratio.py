@@ -32,11 +32,11 @@ ax = sns.violinplot(x = "loci", y="distance",data = all_dist,scale="width",
 mean_dist_by_L = all_dist.groupby("loci").mean()
 ax.plot(range(37),  mean_dist_by_L.values,"_",color = colors[0],markersize=7)
 plt.setp(ax.collections, alpha=.4)
-plt.axhline(y=0.1,color = colors[0],alpha = 0.5, label = "D = 0.1")
-
-
+plt.axhline(y=0.1,color = colors[0],alpha = 0.5, label = "$D_{12} = 0.1$")
+plt.xticks(np.linspace(-2,38,11,dtype=int),[ a+"%" for a in np.linspace(0,100,11,dtype=int).astype(str)])
+plt.ylim((0,0.2))
 
 plt.legend()
-plt.xlabel("Number of SNPs")
-plt.ylabel("Divergence time")
+plt.xlabel(r"$\frac{n_1}{n_1 + n_2}$")
+plt.ylabel("Split time")
 plt.savefig("two_pop_different_ratio.pdf")
