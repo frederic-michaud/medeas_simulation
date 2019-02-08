@@ -50,4 +50,4 @@ aaa = plt.xticks()
 pos_ticks = [0,4,8,12,16]
 plt.xticks(pos_ticks,[aaa[1][i] for i in pos_ticks])
 
-plt.savefig("various_D_same_L_two_pop_bis.pdf")
+plt.savefig("two_pop_different_D.pdf")
