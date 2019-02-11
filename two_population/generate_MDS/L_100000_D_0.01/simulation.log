@@ -1,0 +1,22 @@
+starting new simulation at time: 2019-02-11 10:12:02 
+you are using commit: b'cb2fb94'
+the following line was used to launch the simulation: 
+/Users/fmichaud/PycharmProjects/medeas/main.py --simulation -sf /Users/fmichaud/PycharmProjects/medeas_simulations/two_population/generate_pca/L_100000_D_0.01/snip.txt -lf /Users/fmichaud/PycharmProjects/medeas_simulations/two_population/generate_pca/L_100000_D_0.01/fake_labs.txt --output_folder /Users/fmichaud/PycharmProjects/medeas_simulations/two_population/generate_pca/L_100000_D_0.01 -K 2 -bws 2000 -bsn 100 --topology (2,(1,0));
+This led to the following argument being actually used: 
+
+ 
+****************************************************************************************************
+snps_file: /Users/fmichaud/PycharmProjects/medeas_simulations/two_population/generate_pca/L_100000_D_0.01/snip.txt 
+labels_file: /Users/fmichaud/PycharmProjects/medeas_simulations/two_population/generate_pca/L_100000_D_0.01/fake_labs.txt 
+output_folder: /Users/fmichaud/PycharmProjects/medeas_simulations/two_population/generate_pca/L_100000_D_0.01 
+K: 2 
+n_chromosome: 1 
+boot_window_size: 2000 
+bootstrap_number: 100 
+topology: (2,(1,0)); 
+simulation: True 
+skip_calculate_matrix: False 
+output_level: 1 
+
+****************************************************************************************************
+ 
