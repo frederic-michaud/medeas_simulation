@@ -13,7 +13,7 @@ import sys
 
 # According to scrm, and we follow the convention here, a locus is
 # a physical region which  might contain various snp.
-def transcode(infile: str, outfile: str, nb_individual: int):
+def transcode(infile: str, outfile: str, nb_individual: int,nb_remove: int):
     with open(infile) as f:
         data = f.readlines()
 
@@ -35,7 +35,7 @@ def transcode(infile: str, outfile: str, nb_individual: int):
             listint = list(map(int, listsnp))
             nb_polymorphism = sum(listint)
             #if nb_polymorphism > 5 and nb_polymorphism < 20: #always true, but allow to remove singleton or doublon easly
-            if nb_polymorphism > 0:  # always true, but allow to remove singleton or doublon easly
+            if nb_polymorphism > nb_remove:
                 count_loci = count_loci + 1
                 for individual in range(nb_individual):
                     s = locus[individual][snp]
@@ -47,5 +47,10 @@ def transcode(infile: str, outfile: str, nb_individual: int):
 
 infile = sys.argv[1]
 outfile = sys.argv[2]
-nb_individual = sys.argv[3]
-transcode(infile, outfile, int(nb_individual))
+nb_individual = int(sys.argv[3])
+if len(sys.argv) > 4:
+    maf = float(sys.argv[4])
+    nb_remove = int(maf * nb_individual)
+else:
+    nb_remove = 0
+transcode(infile, outfile, nb_individual, nb_remove)
