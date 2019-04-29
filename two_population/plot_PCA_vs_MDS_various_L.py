@@ -37,7 +37,8 @@ all_dist["loci"] = all_dist["loci"].astype("int").astype('category')
 mean_dist_by_L = all_dist.groupby("loci").mean()
 
 fig = plt.figure()
-ax1 = fig.add_subplot(111)
+ax1 = fig.add_subplot(211)
+ax2 = fig.add_subplot(212)
 sns.violinplot(x = "loci", y="distance_mds",data = all_dist,scale="width",
                     inner="quartiles", color = colors[0], alpha =.5,
                     linewidth=0., ax = ax1)
@@ -46,15 +47,19 @@ ax1.plot(range(13),  mean_dist_by_L.values[:,0],"_",color = colors[0],markersize
 
 sns.violinplot(x = "loci", y="distance_pca",data = all_dist,scale="width",
                     inner="quartiles", color = colors[2], alpha =.5,
-                    linewidth=0., ax = ax1)
+                    linewidth=0., ax = ax2)
 
-ax1.plot(range(13),  mean_dist_by_L.values[:,1],"_",color = colors[2],markersize=7,label = "PCA")
+ax2.plot(range(13),  mean_dist_by_L.values[:,1],"_",color = colors[2],markersize=7,label = "PCA")
 
-plt.axhline(y=0.2,color = colors[3],alpha = 0.5,label = "Simulated value")
+ax1.axhline(y=0.2,color = colors[3],alpha = 0.5,label = "Simulated value")
+ax2.axhline(y=0.2,color = colors[3],alpha = 0.5,label = "Simulated value")
 plt.setp(ax1.collections, alpha=.5)
+plt.setp(ax2.collections, alpha=.5)
 ax1.set_xlabel("# SNPs")
 ax1.set_ylabel("# Estimated split time")
 ax1.legend()
+ax2.legend()
 _,value = plt.xticks()
 plt.xticks(range(0,12,2),np.array(value)[0:12:2])
-plt.savefig("compare_pca_mds.pdf")
+plt.show()
+#plt.savefig("compare_pca_mds.pdf")

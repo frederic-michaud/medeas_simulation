@@ -17,7 +17,7 @@ ax.tick_params(labelcolor='w', top='off', bottom='off', left='off', right='off')
 ax.set_xlabel("Dimension 1")
 ax.set_ylabel("Dimension 2")
 for iL, L in enumerate([100,1000,10000,100000]):
-    val,vec = pickle.load(open(f'{simulation_subfolder}/L_{L}_D_0.01/MDS_eigensystem/p1.vecs.data',"rb"))
+    val,vec = pickle.load(open(f'{simulation_subfolder}/L_{L}_D_0.01/MDS_eigensystem/p2.vecs.data',"rb"))
     ax = fig.add_subplot(2,2,iL+1)
     scale = 0.1
     ax.set_xlim([-scale,scale])
@@ -31,4 +31,4 @@ for iL, L in enumerate([100,1000,10000,100000]):
         ax.set_yticks([])
     ax.scatter(np.sqrt(val[order[0]])*vec[:,order[0]],np.sqrt(val[order[1]])*vec[:,order[1]],c = pointColor,alpha=0.5)
 plt.show()
-fig.savefig("MDS_two_population.pdf")
+fig.savefig("pca_two_population.pdf")

@@ -18,7 +18,8 @@ def run_simulation_two_pops(n1: int, n2: int, L: int, theta: float, D: float,out
 
     scrm_result = os.path.join(output_folder,'scrm.txt')
     location_run_scrm = os.path.join(script_folder, "run_scrm.py")
-    scrm_command = f'{n1+n2} {L} -t {theta} -I 2 {n1} {n2} -ej {D} 1 2 --print-model -l -1 -L'
+    #-en < t > < i > < n >: Set the size of population i to n * N0 at time t.
+    scrm_command = f'{n1+n2} {L} -t {theta} -I 2 {n1} {n2} -ej {D} 1 2 -en 0.18 1 0.1 -en 0. 1 1. --print-model -l -1 -L'
     run_scrm = Popen(['python', location_run_scrm, scrm_command, scrm_result])
     run_scrm.communicate()
 
@@ -46,11 +47,11 @@ def run_simulation_two_pops(n1: int, n2: int, L: int, theta: float, D: float,out
     medeas.communicate()
 
 
-Ls = [int(10**(i/4)) for i in range(8, 21)] #regulary space with 4 point between each order of magnitude
-Ds = [0.01, 0.1]
-sample_size = 20
+Ls = [int(10**(i)) for i in range(4, 7)] #regulary space with 4 point between each order of magnitude
+Ds = [0.2]
+sample_size = 1
 current_folder = os.path.dirname(os.path.realpath(__file__))
-simulation_subfolder = "convergence_various_L"
+simulation_subfolder = "convergence_changing_pop_Ne"
 result_subfolder_fullpath = os.path.join(current_folder, simulation_subfolder)
 if not os.path.exists(result_subfolder_fullpath):
     os.makedirs(result_subfolder_fullpath)

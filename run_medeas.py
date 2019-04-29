@@ -24,9 +24,10 @@ def run_medeas(medeas_exec: str,
                     ' -sf', snip_file,
                     '-lf',label_file,
                     '--output_folder',output_folder,
-                    '-K',K,
                     '-bws', bootsize,
-                    '-bsn','100'
+                    '-bsn','10 '
+                    '--output_level','2'
+#                    '--topology', '(2,(1,0));'
                     ])
     print(command)
     medeas = Popen(command.split())
