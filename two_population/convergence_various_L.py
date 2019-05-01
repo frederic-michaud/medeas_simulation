@@ -47,8 +47,8 @@ def run_simulation_two_pops(n1: int, n2: int, L: int, theta: float, D: float,out
 
 
 Ls = [int(10**(i/4)) for i in range(8, 21)] #regulary space with 4 point between each order of magnitude
-Ds = [0.01, 0.1]
-sample_size = 20
+Ds = [0.05]
+sample_size = 100
 current_folder = os.path.dirname(os.path.realpath(__file__))
 simulation_subfolder = "convergence_various_L"
 result_subfolder_fullpath = os.path.join(current_folder, simulation_subfolder)
@@ -65,7 +65,8 @@ for L in Ls:
                 os.makedirs(output_folder)
             n1 = 20
             n2 = 20
-            run_simulation_two_pops(n1, n2, int(L), 2, D,output_folder)
+            theta = 3
+            run_simulation_two_pops(n1, n2, int(L), theta, D,output_folder)
 
             distance_file = os.path.join(output_folder, "all_extrapolated_distances.txt")
             distance = 0
