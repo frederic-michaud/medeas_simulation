@@ -48,12 +48,13 @@ def run_simulation_three_pops(n1: int, n2: int, n3: int, L: int, theta: float, D
 
 
 Ls = [int(10**(i/4)) for i in range(8,25)] #regulary space with 4 point between each order of magnitude
-Ls = [100]
+Ls = [int(10**(i/4)) for i in range(8,21)] #regulary space with 4 point between each order of magnitude
+
 D1 = 0.1
 D2 = 0.2
 n1 = n2 = n3 = 20
 theta = 2
-sample_size = 100
+sample_size = 20
 current_folder = os.path.dirname(os.path.realpath(__file__))
 simulation_subfolder = "convergence_various_L"
 if not os.path.exists(simulation_subfolder):

@@ -26,8 +26,18 @@ n1 = 20
 n2 = 20
 n3 = 20
 Ne_small1 = 0.5
-Ne_small2s = [int(10**(-i/4+4))/10000 for i in range(0, 13)]
+Ne_small2s = [int(10**(-i/4+4))/10000 for i in range(1, 13)]
 
+#### test for debugging
+Ls = [200001] #regulary space with 4 point between each order of magnitude
+D1 = 0.05
+D2 = 0.2
+n1 = 20
+n2 = 20
+n3 = 20
+Ne_small1 = 0.001
+Ne_small2s = [0.001]
+### end test debugging
 
 for L in Ls:
     all_between = []

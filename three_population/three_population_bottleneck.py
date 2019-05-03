@@ -11,15 +11,20 @@ import os
 import numpy as np
 
 
-def run_simulation_three_pops(n1: int, n2: int, n3: int, L: int, theta: float, D1: float,D2: float,Ne_small1: float, Ne_small2: float,output_folder):
+
+## population 1 remain the last one and is the ancestral population (i.e. african)
+## population 2 and 3 goes through a bottleneck directly after diverging from pop 1, and split a rather long time after that
+# Population 3 is the first one to disapear
+def run_simulation_three_pops(n1: int, n2: int, n3: int, L: int, theta: float, D1: float,D2: float,strenght_bottleneck: float, length_bottleneck: float,output_folder):
 
     current_folder = os.path.dirname(os.path.realpath(__file__))
     script_folder = os.path.split(current_folder)[0]
 
     scrm_result = os.path.join(output_folder,'scrm.txt')
     location_run_scrm = os.path.join(script_folder, "run_scrm.py")
-    #-en < t > < i > < n >: Set the size of population i to n * N0 at time t.
-    scrm_command = f'{n1+n2+n3} {L} -t {theta} -I 3 {n1} {n2} {n3} -ej {D1} 3 2 -ej {D2} 2 1 -en 0 2 {Ne_small1} -en 0 3 {Ne_small2} --print-model -l -1 -L'
+    # -en < t > < i > < n >: Set the size of population i to n * N0 at time t.
+    # -ej < t > < j > < i >: Adds a specialization event in population i that creates population j
+    scrm_command = f'{n1+n2+n3} {L} -t {theta} -I 3 {n1} {n2} {n3} -ej {D1} 3 2 -ej {D2} 2 1 -en 0 2 1 -en {D2 - length_bottleneck} 2 {strenght_bottleneck} --print-model -l -1 -L'
     run_scrm = Popen(['python', location_run_scrm, scrm_command, scrm_result])
     run_scrm.communicate()
 
@@ -48,46 +53,50 @@ def run_simulation_three_pops(n1: int, n2: int, n3: int, L: int, theta: float, D
 
 
 
-Ls = [int(10**(i/4)) for i in range(8,25)] #regulary space with 4 point between each order of magnitude
-Ls = [int(10**(i/4)) for i in range(8,21)] #regulary space with 4 point between each order of magnitude
-Ls = [100000] #regulary space with 4 point between each order of magnitude
-D1 = 0.05
-D2 = 0.2
-n1 = 20
+Ls = [10000] #regulary space with 4 point between each order of magnitude
+D1 = 0.025
+D2 = 0.1
+n1 = 15
 n2 = 20
-n3 = 20
-Ne_small1 = 0.5
-Ne_small2s = [int(10**(-i/4+4))/10000 for i in range(0, 13)]
+n3 = 25
+strenght_bottlenecks = [1,0.1,0.01, 0.001]
+strenght_bottlenecks = [int(10**(-i/4+4))/10000 for i in range(0, 13)]
+length_bottleneck = 0.025
+
+theta = 3
+sample_size = 100
 
 
-#### test for debugging
-Ls = [200001] #regulary space with 4 point between each order of magnitude
-D1 = 0.05
-D2 = 0.2
-n1 = 20
+###### to be removed#######
+Ls = [1000000] #regulary space with 4 point between each order of magnitude
+D1 = 0.025
+D2 = 0.1
+n1 = 15
 n2 = 20
-n3 = 20
-Ne_small1 = 0.001
-Ne_small2s = [0.001]
-### end test debugging
-theta = 2
-sample_size = 10
+n3 = 25
+
+strenght_bottlenecks = [int(10**(-i/4+4))/10000 for i in range(0, 13)]
+length_bottleneck = 0.025
+
+theta = 3
+sample_size = 1
+###### to be removed#######
 current_folder = os.path.dirname(os.path.realpath(__file__))
-simulation_subfolder = "convergence_various_Ne"
+simulation_subfolder = "convergence_bottleneck"
 if not os.path.exists(simulation_subfolder):
     os.mkdir(simulation_subfolder)
 for L in Ls:
-    for Ne_small2 in Ne_small2s:
-        within_summary_file = os.path.join(simulation_subfolder,f'L_{L}_Ne_{Ne_small2}.within')
-        between_summary_file = os.path.join(simulation_subfolder, f'L_{L}_Ne_{Ne_small2}.between')
+    for strenght_bottleneck in strenght_bottlenecks:
+        within_summary_file = os.path.join(simulation_subfolder,f'L_{L}_Ne_{strenght_bottleneck}.within')
+        between_summary_file = os.path.join(simulation_subfolder, f'L_{L}_Ne_{strenght_bottleneck}.between')
         summary_within = open(within_summary_file, "w")
         summary_between= open(between_summary_file, "w")
         for _ in range(sample_size):
-            simulation_subsubfolder = f'L_{L}_Ne_{Ne_small2}'
+            simulation_subsubfolder = f'L_{L}_Ne_{strenght_bottleneck}'
             output_folder = os.path.join(current_folder, simulation_subfolder,simulation_subsubfolder)
             if not os.path.exists(output_folder):
                 os.makedirs(output_folder)
-            run_simulation_three_pops(n1, n2, n3, L, theta, D1, D2, Ne_small1 , Ne_small2, output_folder)
+            run_simulation_three_pops(n1, n2, n3, L, theta, D1, D2, strenght_bottleneck , length_bottleneck, output_folder)
             distance_file = os.path.join(output_folder,"all_extrapolated_distances.txt")
             distances  = np.loadtxt(distance_file)
             distance1 = np.mean(distances[:,0])

@@ -24,7 +24,7 @@ ax.set_xlabel("Dimension 1")
 ax.set_ylabel("Dimension 2")
 colors_three_pop = np.concatenate((np.full(20,colors[0]),np.full(20,colors[4]),np.full(20,colors[2])))
 for iL, L in enumerate([100,1000,10000,100000]):
-    location_vector = os.path.join (simulation_subfolder, f'/{simulation_subfolder}/L_{L}/MDS_eigensystem/p2.vecs.data')
+    location_vector = os.path.join (simulation_subfolder, f'/{simulation_subfolder}/L_{L}/MDS_eigensystem/p1.vecs.data')
     val,vec = pickle.load(open(location_vector,"rb"))
     ax = fig.add_subplot(2,2,iL+1)
     ax.set_xlim([-0.3,0.3])

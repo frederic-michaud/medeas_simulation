@@ -18,7 +18,7 @@ all_distances = np.zeros((3,0))
 for L in Ls:
     distance_summary_file = f'convergence_various_L/L_{L}.dat'
     distances = np.loadtxt(distance_summary_file)
-    all_distances = np.column_stack((all_distances,np.row_stack((np.full(len(distances[:,0]),L),distances[:,0]/2,distances[:,1]/2))))
+    all_distances = np.column_stack((all_distances,np.row_stack((np.full(len(distances[:,0]),L),(distances[:,0]),(distances[:,1])))))
 nbL = len(Ls)
 
 prop_cycle = plt.rcParams['axes.prop_cycle']
@@ -34,7 +34,7 @@ ax = sns.violinplot(x = "loci", y="distance1",data = all_dist,scale="width",
 mean_dist_by_L = all_dist.groupby("loci").mean()
 
 plt.setp(ax.collections, alpha=.4)
-plt.axhline(y=0.2,color = colors[2],alpha = 0.5, label = r"$D_{2,3} = 0.2$")
+plt.axhline(y=1.4,color = colors[2],alpha = 0.5, label = r"$t_{2,3} = 1.4$")
 
 all_dist = pd.DataFrame(data = dico)
 all_dist["loci"] = all_dist["loci"].astype('category')
@@ -46,15 +46,16 @@ print(mean_dist_by_L)
 ax.plot(range(nbL),  mean_dist_by_L.values[:,0],"_",color = colors[2],markersize=7)
 ax.plot(range(nbL),  mean_dist_by_L.values[:,1],"_",color = colors[0],markersize=7)
 plt.setp(ax.collections, alpha=.4)
-plt.axhline(y=0.1,color = colors[0],alpha = 0.5, label = r"$D_{1,2} = 0.1$")
+plt.axhline(y=1.2,color = colors[0],alpha = 0.5, label = r"$t_{1,2} = 1.2$")
 _,value = plt.xticks()
 #plt.xticks(range(0,nbL,4),np.array(value)[0:nbL:4])
 aa = ["100","1'000","10'000", "100'000"]
 plt.xticks(range(0,nbL,4),aa)
+#plt.ylim(0,0.7)
 
 
 plt.legend()
 plt.xlabel("Number of SNPs")
-plt.ylabel("Divergence time")
+plt.ylabel("Mean coalescence time")
 plt.savefig("three_pop_various_L.pdf")
 
