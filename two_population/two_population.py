@@ -45,8 +45,14 @@ def run_simulation_two_pops(n1: int, n2: int, L: int, theta: float, D: float,out
     medeas = Popen(command.split())
     medeas.communicate()
 
+current_folder = os.path.dirname(os.path.realpath(__file__))
+simulation_subfolder = "supp"
+result_subfolder_fullpath = os.path.join(current_folder, simulation_subfolder)
+run_simulation_two_pops(20, 20, 100000, 2, 0.234,result_subfolder_fullpath)
+
 
 Ls = [int(10**(i/4)) for i in range(8, 20)] #regulary space with 4 point between each order of magnitude
+LS = [1]
 Ds = [0.01, 0.1]
 sample_size = 100
 current_folder = os.path.dirname(os.path.realpath(__file__))

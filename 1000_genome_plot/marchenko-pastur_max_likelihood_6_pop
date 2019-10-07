@@ -1,0 +1,132 @@
+import numpy as np
+import matplotlib.pyplot as plt
+import os
+import pickle
+import scipy.optimize
+prop_cycle = plt.rcParams['axes.prop_cycle']
+colors = np.array(prop_cycle.by_key()['color'])
+
+
+print(os.getcwd())
+#%%
+simulation_subfolder = "../../Desktop/medeas_1000_genome/"
+simulation_subsub_folder = os.path.join(simulation_subfolder,f"strong_prunning/all/pop_all")
+val, vec = pickle.load(open(os.path.join(simulation_subsub_folder, "MDS_eigensystem/p2.vecs.data"), "rb"))
+
+#%%
+print(os.getcwd())
+simulation_subfolder = "three_population/plot_spectrum/L_500n_102"
+val, vec = pickle.load(open(os.path.join(simulation_subfolder, "MDS_eigensystem/p2.vecs.data"), "rb"))
+
+#%%
+
+N = len(val)
+def find_T_and_L(file: str):
+    """Find total tree length T and effective number of markers L using
+    the bulk eigenvalues from eigensystem stored in (pickled) 'file'.
+    """
+    with open(file, 'rb') as f:
+        lambdas, vecs = pickle.load(f)
+
+    # finding L and T from fit
+    lambdas_s = np.array(sorted(lambdas))
+    lambdas_s = lambdas_s[1:]
+    N = len(lambdas)
+
+def dens_partial(x: float, T: float, L: float) -> float:
+    """Marchenko-Pastur distribution function on interval
+    a < x < b.
+    """
+    a = 2/T**2 * (1 - np.sqrt(N/L))**2
+    b = 2/T**2 * (1 + np.sqrt(N/L))**2
+    sigma2 = 2/T**2
+    ab = N/L
+    dens = 1/(2*np.math.pi*sigma2)*(np.sqrt((a-x)*(x-b)))/(x*ab)
+    return dens
+
+def dens_fit(x: float, T: float, L: int):
+    """Marchenko-Pastur distribution function for
+    arbitrary x from total tree length 'T' and number of markers L.
+    """
+    a = 2/T**2 * (1 - np.sqrt(N/L))**2
+    b = 2/T**2 * (1 + np.sqrt(N/L))**2
+    if x <= a:
+        return 0
+    if x >= b:
+        return 0
+    return dens_partial(x, T,L)
+
+
+#%%
+def log_likelihood(xs, T, L):
+    likelihood = np.sum(np.log([dens_fit(x,T,L) for x in xs]))
+    return(likelihood)
+
+
+
+
+
+#%%
+lambda_max = 1.01*val[-1]
+lambda_min = val[1]/1.01
+r = np.sqrt(lambda_max/lambda_min)
+L = N*((1-r)/(r+1))**2
+T = np.sqrt(2*(1+np.sqrt(N/L))**2/lambda_max)
+print(L)
+print(T)
+all_max = []
+for i in range(0,10):
+    eg = val[1:-i] if i > 0 else val[1:]
+    def log_likelihood_given(x):
+        nb_points = len(eg)
+        return -log_likelihood(eg, x[0], x[1])
+    output = scipy.optimize.fmin(log_likelihood_given,(T,L),full_output = True)
+    plt.figure()
+    xs = np.arange(0.0, lambda_max, 0.0001)
+
+    ys = [dens_fit(x, output[0][0], output[0][1]) for x in xs]
+
+    plt.plot(xs, ys, c=colors[2])
+    plt.fill(xs, ys, c=colors[2], alpha=0.2, label="fitted Marchenko-Pastur")
+    plt.hist(eg, 12, density=1, edgecolor='blue', alpha=0.75, label="Observed distribution")
+    plt.title(f"log likelihood = {output[1]}")
+    plt.show()
+    all_max.append(output[1])
+
+print(all_max)
+#%%
+plt.figure()
+plt.plot(all_max,"o")
+#plt.ylim((-7600,-7400))
+plt.xlim((0,25))
+plt.show()
+
+#%%
+all_max = np.array(all_max)
+all_max_ratio = all_max[1:]/all_max[:-1]
+plt.figure()
+plt.plot(all_max_ratio,"o")
+plt.ylim((0.99,1.02))
+#plt.xlim((0,25))
+plt.show()
+
+#%%
+plt.figure()
+xs = np.arange(0.0,1.2,0.0001)
+
+ys = [dens_fit(x, T, L) for x in xs]
+
+plt.plot(xs,ys,c = colors[2])
+plt.fill(xs,ys,c = colors[2],alpha = 0.2, label = "fitted Marchenko-Pastur")
+plt.hist(val[1:],12,density=1,edgecolor='blue',alpha = 0.75,label = "Observed distribution")
+
+plt.xlabel("Bulk eigenvalue")
+plt.ylabel("Probability density function")
+plt.legend(loc="upper right")
+plt.show()
+
+
+
+#%%
+plt.plot(-np.sort(-val[1:]),"o")
+plt.show()

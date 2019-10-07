@@ -37,9 +37,18 @@ fig.savefig("JPT_CHB_mds.pdf")
 fig = plt.figure()
 Ts = np.loadtxt(open(os.path.join(simulation_subsub_folder, "all_extrapolated_T.txt")))
 t12 = np.loadtxt(open(os.path.join(simulation_subsub_folder, "all_extrapolated_distances.txt")))
+t11,t22 = np.transpose(np.loadtxt(open(os.path.join(simulation_subsub_folder, "all_extrapolated_effective_size.txt"))))
 n1 = np.sum(labels == labels[0])
 n2 = np.sum(labels == labels[-1])
 n = n1 + n2
+t22_sorted = np.sort(t22)
+print(f"t22 mean: {np.mean(t22)}")
+print(f"lower 2: {t22_sorted[2]}")
+print(f"upper 3: {t22_sorted[-3]}")
+t12_sorted = np.sort(t12)
+print(f"t12 mean: {np.mean(t12)}")
+print(f"lower 2: {t12_sorted[2]}")
+print(f"upper 3: {t12_sorted[-3]}")
 
 extrapolated_distance = t12 - (1+0.99684897)/2
 plt.plot(-np.sort(-val),"o",alpha = 0.5, label = "Real values")

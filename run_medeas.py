@@ -15,17 +15,15 @@ def run_medeas(medeas_exec: str,
                 snip_file: str,
                label_file: str,
                output_folder: str,
-               K: int,
                bootsize: int
                ):
 
     command = " ".join(['python',medeas_exec,
-                    '--simulation',
                     ' -sf', snip_file,
                     '-lf',label_file,
                     '--output_folder',output_folder,
                     '-bws', bootsize,
-                    '-bsn','10 '
+                    '-bsn','100 ',
                     '--output_level','2'
 #                    '--topology', '(2,(1,0));'
                     ])
@@ -36,11 +34,9 @@ def run_medeas(medeas_exec: str,
 snip_file = sys.argv[1]
 label_file = sys.argv[2]
 output_folder = sys.argv[3]
-K = 0
-bootsize = 10
-if len(sys.argv) > 4:
-    K = sys.argv[4]
-if len(sys.argv) > 5:
-    bootsize = sys.argv[5]
+bootsize = str(10000)
 
-run_medeas(medeas_exec,snip_file, label_file,output_folder,K,bootsize)
+if len(sys.argv) > 4:
+    bootsize = sys.argv[4]
+
+run_medeas(medeas_exec,snip_file, label_file,output_folder,bootsize)

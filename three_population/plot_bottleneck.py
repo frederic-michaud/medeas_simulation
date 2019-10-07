@@ -105,6 +105,6 @@ for L in Ls:
     plt.xticks([0,2,4,6,8],[r"$10^{-2}$",r"$10^{-3/2}$",r"$10^{-1}$",r"$10^{-1/2}$",r"$10^{0}$"])
 
     plt.show()
-    fig.savefig("three_population_bottleneck.pdf")
+    fig.savefig("three_pop_t.pdf")
 
     fig = plt.figure()

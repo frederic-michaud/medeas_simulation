@@ -58,7 +58,7 @@ for L in Ls:
                             linewidth=0.)
         mean_dist_by_N = all_between.groupby("Ne").mean()
         print(mean_dist_by_N)
-        ax.plot(range(len(mean_dist_by_N)),  mean_dist_by_N.values[:,0],"_",color = colors[0],markersize=7)
+        ax.plot(range(len(mean_dist_by_N)),  mean_dist_by_N.values[:,1],"_",color = colors[0],markersize=7)
         plt.setp(ax.collections, alpha=.4)
         plt.axhline(y=1+2*D,color = colors[0],alpha = 0.5, label = r"$t_{1,2} expected$")
         plt.savefig("estimate_dist.pdf")

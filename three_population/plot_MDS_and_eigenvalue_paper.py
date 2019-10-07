@@ -14,6 +14,7 @@ n2 = 20
 n3 = 25
 strenght_bottlenecks = [int(10**(-i/4+4))/10000 for i in range(0, 13)]
 strenght_bottleneck = strenght_bottlenecks[6]
+print(strenght_bottleneck)
 size_bottleneck = strenght_bottleneck
 print(f"strength bottleneck = {strenght_bottleneck}")
 L = 10000
@@ -65,14 +66,14 @@ populations_sizes = [15,20,25]
 threshold = 0
 for population_size in populations_sizes:
     population_span = range(threshold,threshold+population_size)
-    plt.scatter(np.sqrt(val[order[0]])*vec[population_span,order[0]],np.sqrt(val[order[1]])*vec[population_span,order[15]],c = pointColor[population_span],alpha=0.5)
+    plt.scatter(np.sqrt(val[order[0]])*vec[population_span,order[0]],np.sqrt(val[order[15]])*vec[population_span,order[15]],c = pointColor[population_span],alpha=0.5)
     threshold = threshold + population_size
-plt.legend(["Pop. 1","Pop. 2"],loc = 1)
+plt.legend(["Pop. 1","Pop. 2", "Pop. 3"],loc = 1)
 plt.xlabel("Dimension 1")
-plt.ylabel("Dimension 2")
+plt.ylabel("Dimension 16")
 
 plt.show()
-fig.savefig("three_pop_bottleneck_mds.pdf")
+fig.savefig("three_pop_mds.pdf")
 
 fig = plt.figure()
 Ts = np.loadtxt(open(os.path.join(simulation_subsubfolder, "all_extrapolated_T.txt")))
@@ -137,4 +138,4 @@ ax2.set_ylabel("  ")
 ax2.set_yticks([0,0.01,0.02])
 fig.text(0.04, 0.5, 'Eigenvalue', ha='center', va='center', rotation='vertical')
 
-fig.savefig("two_pop_constant_size_eigenvalue.pdf")
+fig.savefig("three_pop_eigenvalue.pdf")

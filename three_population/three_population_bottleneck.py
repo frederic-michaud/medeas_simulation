@@ -53,7 +53,7 @@ def run_simulation_three_pops(n1: int, n2: int, n3: int, L: int, theta: float, D
 
 
 
-Ls = [10000] #regulary space with 4 point between each order of magnitude
+Ls = [100001] #regulary space with 4 point between each order of magnitude
 D1 = 0.025
 D2 = 0.1
 n1 = 15
@@ -61,26 +61,13 @@ n2 = 20
 n3 = 25
 strenght_bottlenecks = [1,0.1,0.01, 0.001]
 strenght_bottlenecks = [int(10**(-i/4+4))/10000 for i in range(0, 13)]
-length_bottleneck = 0.025
-
-theta = 3
-sample_size = 100
-
-
-###### to be removed#######
-Ls = [1000000] #regulary space with 4 point between each order of magnitude
-D1 = 0.025
-D2 = 0.1
-n1 = 15
-n2 = 20
-n3 = 25
-
-strenght_bottlenecks = [int(10**(-i/4+4))/10000 for i in range(0, 13)]
+strenght_bottlenecks = [0.025]
 length_bottleneck = 0.025
 
 theta = 3
 sample_size = 1
-###### to be removed#######
+
+
 current_folder = os.path.dirname(os.path.realpath(__file__))
 simulation_subfolder = "convergence_bottleneck"
 if not os.path.exists(simulation_subfolder):
