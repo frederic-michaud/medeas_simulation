@@ -1,0 +1,12 @@
+.DS_Store
+log_tpcl.txt
+scrm
+two_population/log_gp.txt
+.snakemake/
+.idea/
+figure/
+sinfle_population/log_mp.txt/
+sinfle_population/log_mp.txt
+single_population/log_mp.txt
+three_population/log_bottlenack.txt
+three_population/log_bottleneck.txt

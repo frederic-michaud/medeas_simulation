@@ -129,7 +129,7 @@ def get_pp_points(lambdas):
 fig, axes = plt.subplots(2,2,figsize=(12,9))
 
 #%% Simulated data
-simulation_subfolder = "../single_population/marchenko_pastur"
+simulation_subfolder = "single_population/marchenko_pastur"
 simulation_subsub_folder = os.path.join(simulation_subfolder,f"L_10000")
 val, vec = pickle.load(open(os.path.join(simulation_subsub_folder, "MDS_eigensystem/p2.vecs.data"), "rb"))
 pp_simulation = get_pp_points(val[1:])
@@ -137,26 +137,26 @@ plot_mp_vs_histogram_reduce(val[1:], axes[0][0])
 
 
 #%%
-simulation_subfolder = "../../../mds_1000_genome/random_prunning/medeas/single/YRI/"
+simulation_subfolder = "../../mds_1000_genome/random_prunning/medeas/single/YRI/"
 val, vec = pickle.load(open(os.path.join(simulation_subfolder, "MDS_eigensystem/p2.vecs.data"), "rb"))
 pp_random_prunning = get_pp_points(val[1:])
 plot_mp_vs_histogram_reduce(val[1:],  axes[1][1])
 
 #%%
-simulation_subfolder = "../../../mds_1000_genome/plink_prunning/medeas/single/YRI/"
+simulation_subfolder = "../../mds_1000_genome/plink_prunning/medeas/single/YRI/"
 val, vec = pickle.load(open(os.path.join(simulation_subfolder, "MDS_eigensystem/p2.vecs.data"), "rb"))
 pp_plink_prunning = get_pp_points(val[1:])
 plot_mp_vs_histogram_reduce(val[1:],  axes[1][0])
 
 #%%
-simulation_subfolder = "../../../mds_1000_genome/no_prunning/medeas/single/YRI/"
+simulation_subfolder = "../../mds_1000_genome/no_prunning/medeas/single/YRI/"
 val, vec = pickle.load(open(os.path.join(simulation_subfolder, "MDS_eigensystem/p2.vecs.data"), "rb"))
 pp_no_prunning = get_pp_points(val[1:])
 plot_mp_vs_histogram_reduce(val[1:],  axes[0][1])
 fig.text(0.5, 0.03, 'Eigenvalue', ha='center')
 fig.text(0.03, 0.5, 'Eigenvalue density', va='center', rotation='vertical')
 #plt.show()
-plt.savefig("marchenko-pastur.pdf")
+plt.savefig("figure/marchenko-pastur.pdf")
 #%% Plotting pp value plot
 plt.figure()
 plt.plot(pp_simulation, np.linspace(0,1,num= len(pp_simulation)),label = "Simulated value")
@@ -167,7 +167,7 @@ plt.plot([0,1],[0,1],'k',lw = 0.5, label = "expected")
 plt.xlabel("Theoretical distribution")
 plt.ylabel("Observed distribution")
 plt.legend()
-plt.savefig("pp_plot_marchenko_pastur_fit.pdf")
+plt.savefig("figure/pp_plot_marchenko_pastur_fit.pdf")
 
 
 

@@ -7,18 +7,18 @@ import matplotlib.ticker as ticker
 plt.rcParams.update({'font.size': 14})
 prop_cycle = plt.rcParams['axes.prop_cycle']
 colors = np.array(prop_cycle.by_key()['color'])
-simulation_subfolder = "../../../Desktop/medeas_1000_genome"
-pop_name = "pops_JPT_CHB"
-simulation_subsub_folder = os.path.join(simulation_subfolder,f"pops_JPT_CHB")
+simulation_subfolder = "../../mds_1000_genome/no_prunning/medeas/double/CHB_JPT"
+label_subfolder = "../../mds_1000_genome/no_prunning/label/double/"
+pop_name = "CHB_JPT"
 
 fig = plt.figure()
-print(os.getcwd())
 
-val,vec = pickle.load(open(os.path.join(simulation_subsub_folder,"MDS_eigensystem","p1.vecs.data"),"rb"))
+
+val,vec = pickle.load(open(os.path.join(simulation_subfolder,"MDS_eigensystem","p1.vecs.data"),"rb"))
 order = np.argsort(-val)
 
 
-with open(os.path.join(simulation_subfolder,f'{pop_name}_haplo.lab'),"rb") as f:
+with open(os.path.join(label_subfolder,f'{pop_name}_haplo.lab'),"rb") as f:
     lines = f.readlines()
 
 labels = [l.split()[0] for l in lines]
@@ -31,13 +31,13 @@ for index_population, population in enumerate(populations):
 plt.xlabel("Dimension 1")
 plt.ylabel("Dimension 2")
 plt.legend(["Han Chinese ","Japanese"])
-plt.show()
-fig.savefig("JPT_CHB_mds.pdf")
+
+fig.savefig("figure/JPT_CHB_mds.pdf")
 
 fig = plt.figure()
-Ts = np.loadtxt(open(os.path.join(simulation_subsub_folder, "all_extrapolated_T.txt")))
-t12 = np.loadtxt(open(os.path.join(simulation_subsub_folder, "all_extrapolated_distances.txt")))
-t11,t22 = np.transpose(np.loadtxt(open(os.path.join(simulation_subsub_folder, "all_extrapolated_effective_size.txt"))))
+Ts = np.loadtxt(open(os.path.join(simulation_subfolder, "all_extrapolated_T.txt")))
+t12 = np.loadtxt(open(os.path.join(simulation_subfolder, "all_extrapolated_distances.txt")))
+t11,t22 = np.transpose(np.loadtxt(open(os.path.join(simulation_subfolder, "all_extrapolated_effective_size.txt"))))
 n1 = np.sum(labels == labels[0])
 n2 = np.sum(labels == labels[-1])
 n = n1 + n2
@@ -75,6 +75,6 @@ plt.legend()
 plt.xlabel("Eigenvalue index")
 plt.ylabel("Eigenvalue")
 
-plt.show()
 
-fig.savefig("JPT_CHB_eigenvalue.pdf")
+
+fig.savefig("figure/JPT_CHB_eigenvalues.pdf")

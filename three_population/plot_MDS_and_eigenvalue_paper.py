@@ -6,7 +6,7 @@ import pickle
 plt.rcParams.update({'font.size': 14})
 prop_cycle = plt.rcParams['axes.prop_cycle']
 colors = np.array(prop_cycle.by_key()['color'])
-simulation_subfolder = "convergence_bottleneck"
+simulation_subfolder = "three_population/convergence_bottleneck"
 D1 = 0.025
 D2 = 0.1
 n1 = 15
@@ -14,9 +14,9 @@ n2 = 20
 n3 = 25
 strenght_bottlenecks = [int(10**(-i/4+4))/10000 for i in range(0, 13)]
 strenght_bottleneck = strenght_bottlenecks[6]
-print(strenght_bottleneck)
+
 size_bottleneck = strenght_bottleneck
-print(f"strength bottleneck = {strenght_bottleneck}")
+
 L = 10000
 length_bottleneck = 0.025
 
@@ -72,22 +72,18 @@ plt.legend(["Pop. 1","Pop. 2", "Pop. 3"],loc = 1)
 plt.xlabel("Dimension 1")
 plt.ylabel("Dimension 16")
 
-plt.show()
-fig.savefig("three_pop_mds.pdf")
+fig.savefig("figure/three_pop_mds.pdf")
 
-fig = plt.figure()
+
 Ts = np.loadtxt(open(os.path.join(simulation_subsubfolder, "all_extrapolated_T.txt")))
-plt.plot(-np.sort(-val),"o",alpha = 0.5, label = "Simulated values")
+
 
 T = Ts[0]
-large_eg_analytical =  -2*vals/T**2
-print(large_eg_analytical)
-plt.plot(2,large_eg_analytical[1],"o")
-plt.plot(1,large_eg_analytical[0],"o")
-#plt.plot(range(1,39), 38*[2/T**2], "x", color=colors[2], label = "Analytical prediction")
-#plt.plot(39, 0, "x", color=colors[2])
 
-plt.show()
+large_eg_analytical =  -2*vals/T**2
+
+
+
 
 
 # If we were to simply plot pts, we'd lose most of the interesting
@@ -138,4 +134,4 @@ ax2.set_ylabel("  ")
 ax2.set_yticks([0,0.01,0.02])
 fig.text(0.04, 0.5, 'Eigenvalue', ha='center', va='center', rotation='vertical')
 
-fig.savefig("three_pop_eigenvalue.pdf")
+fig.savefig("figure/three_pop_eigenvalue.pdf")

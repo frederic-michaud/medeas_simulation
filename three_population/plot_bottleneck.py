@@ -18,11 +18,9 @@ def expected_time_two_change(n1: float, n2: float, D1: float, D2: float):
     n_effectif = n2 + np.exp(-2*(D1/n1+D2/n2))*(1-n1+ np.exp(2*D1/n1)*(n1-n2))
     return(n_effectif)
 
-simulation_subfolder = "convergence_bottleneck"
+simulation_subfolder = "three_population/convergence_bottleneck"
 cwd = os.getcwd()
 simulation_subfolder = os.path.join(cwd, simulation_subfolder)
-Ls = [int(10**(i/4)) for i in range(8,25)] #regulary space with 4 point between each order of magnitude
-Ls = [int(10**(i/4)) for i in range(8,21)] #regulary space with 4 point between each order of magnitude
 Ls = [10000] #regulary space with 4 point between each order of magnitude
 D1 = 0.025
 D2 = 0.1
@@ -30,7 +28,6 @@ n1 = 15
 n2 = 20
 n3 = 25
 strenght_bottlenecks = [int(10**(-i/4+4))/10000 for i in range(0, 9)]
-
 length_bottleneck = 0.025
 
 
@@ -104,7 +101,6 @@ for L in Ls:
     plt.ylabel("Mean coalescent time")
     plt.xticks([0,2,4,6,8],[r"$10^{-2}$",r"$10^{-3/2}$",r"$10^{-1}$",r"$10^{-1/2}$",r"$10^{0}$"])
 
-    plt.show()
-    fig.savefig("three_pop_t.pdf")
+    fig.savefig("figure/three_pop_t.pdf")
 
     fig = plt.figure()

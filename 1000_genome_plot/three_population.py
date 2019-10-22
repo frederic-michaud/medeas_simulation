@@ -7,19 +7,19 @@ import matplotlib.ticker as ticker
 plt.rcParams.update({'font.size': 14})
 prop_cycle = plt.rcParams['axes.prop_cycle']
 colors = np.array(prop_cycle.by_key()['color'])
-simulation_subfolder = "../../../Desktop/medeas_1000_genome"
+simulation_subfolder = "../../mds_1000_genome/no_prunning/medeas/triple/JPT_CHB_YRI"
+label_subfolder = "../../mds_1000_genome/no_prunning/label/triple"
 pop_name = "JPT_CHB_YRI"
-simulation_subsub_folder = os.path.join(simulation_subfolder,f"triple/JPT_CHB_YRI")
-label_subsub_folder = os.path.join(simulation_subfolder,f"label/triple/")
+
 
 fig = plt.figure()
 print(os.getcwd())
 
-val,vec = pickle.load(open(os.path.join(simulation_subsub_folder,"MDS_eigensystem","p1.vecs.data"),"rb"))
+val,vec = pickle.load(open(os.path.join(simulation_subfolder,"MDS_eigensystem","p1.vecs.data"),"rb"))
 order = np.argsort(-val)
 
 
-with open(os.path.join(label_subsub_folder,f'{pop_name}_haplo.lab'),"rb") as f:
+with open(os.path.join(label_subfolder,f'{pop_name}_haplo.lab'),"rb") as f:
     lines = f.readlines()
 
 labels = [l.split()[0] for l in lines]
@@ -33,16 +33,16 @@ plt.xlabel("Dimension 1")
 plt.ylabel("Dimension 2")
 plt.ylim((-0.01,0.01))
 plt.legend(["Han Chinese ","Japanese", "Yoruba"])
-plt.show()
-fig.savefig("JPT_CHB_YRI_mds.pdf")
+
+fig.savefig("figure/JPT_CHB_YRI_mds.pdf")
 
 fig = plt.figure()
 
 
 
-Ts = np.loadtxt(open(os.path.join(simulation_subsub_folder, "all_extrapolated_T.txt")))
-ts_between = np.loadtxt(open(os.path.join(simulation_subsub_folder, "all_extrapolated_distances.txt")))
-ts_within = np.loadtxt(open(os.path.join(simulation_subsub_folder, "all_extrapolated_effective_size.txt")))
+Ts = np.loadtxt(open(os.path.join(simulation_subfolder, "all_extrapolated_T.txt")))
+ts_between = np.loadtxt(open(os.path.join(simulation_subfolder, "all_extrapolated_distances.txt")))
+ts_within = np.loadtxt(open(os.path.join(simulation_subfolder, "all_extrapolated_effective_size.txt")))
 n1 = np.sum(labels == "JPT")
 n2 = np.sum(labels == "CHB")
 n3 = np.sum(labels == "YRI")
@@ -151,6 +151,6 @@ fig.text(0.04, 0.5, 'Eigenvalue', ha='center', va='center', rotation='vertical')
 ax2.set_ylim(-0.001,0.018)
 ax.set_ylim(0.58,.7)
 
-plt.show()
+
 fig.subplots_adjust(hspace=.025,left = 0.17)
-fig.savefig("JPT_CHB_YRI_eigenvalue.pdf")
+fig.savefig("figure/JPT_CHB_YRI_eigenvalue.pdf")

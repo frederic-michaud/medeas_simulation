@@ -1,0 +1,15 @@
+channels:
+    - conda-forge
+    - bioconda
+dependencies:
+  - python = 3.6
+  - matplotlib
+  - numpy
+  - scipy
+  - scikit-learn
+  - scikit-bio
+  - snakemake=5
+  - seaborn
+  - pycairo
+#  - scrm # apparently, this package does not exist for mac, but only for linux. Need to be installed manually for mac.
+

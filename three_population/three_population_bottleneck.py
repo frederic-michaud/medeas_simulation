@@ -46,30 +46,29 @@ def run_simulation_three_pops(n1: int, n2: int, n3: int, L: int, theta: float, D
     K = 3
     nb_boot_window = 50
     bootwindow = int(L/nb_boot_window)
-    command = " ".join(['python',location_run_medeas, snip_file,label_file,output_folder,str(K),str(bootwindow)])
+    command = " ".join(['python',location_run_medeas, snip_file,label_file,output_folder,str(bootwindow)])
     print(command)
     medeas = Popen(command.split())
     medeas.communicate()
 
 
 
-Ls = [100001] #regulary space with 4 point between each order of magnitude
+Ls = [10000] #regulary space with 4 point between each order of magnitude
 D1 = 0.025
 D2 = 0.1
 n1 = 15
 n2 = 20
 n3 = 25
-strenght_bottlenecks = [1,0.1,0.01, 0.001]
-strenght_bottlenecks = [int(10**(-i/4+4))/10000 for i in range(0, 13)]
-strenght_bottlenecks = [0.025]
+strenght_bottlenecks = [int(10**(-i/4+4))/10000 for i in range(0, 9)]
 length_bottleneck = 0.025
 
 theta = 3
-sample_size = 1
+sample_size = 100
 
 
 current_folder = os.path.dirname(os.path.realpath(__file__))
 simulation_subfolder = "convergence_bottleneck"
+simulation_subfolder = os.path.join(current_folder,simulation_subfolder)
 if not os.path.exists(simulation_subfolder):
     os.mkdir(simulation_subfolder)
 for L in Ls:
@@ -80,18 +79,18 @@ for L in Ls:
         summary_between= open(between_summary_file, "w")
         for _ in range(sample_size):
             simulation_subsubfolder = f'L_{L}_Ne_{strenght_bottleneck}'
-            output_folder = os.path.join(current_folder, simulation_subfolder,simulation_subsubfolder)
+            output_folder = os.path.join(simulation_subfolder,simulation_subsubfolder)
             if not os.path.exists(output_folder):
                 os.makedirs(output_folder)
             run_simulation_three_pops(n1, n2, n3, L, theta, D1, D2, strenght_bottleneck , length_bottleneck, output_folder)
-            distance_file = os.path.join(output_folder,"all_extrapolated_distances.txt")
-            distances  = np.loadtxt(distance_file)
+            distance_file = os.path.join(output_folder,"between_population_coalescence_time.txt")
+            distances  = np.loadtxt(distance_file, skiprows = 1)
             distance1 = np.mean(distances[:,0])
             distance2 = np.mean(distances[:, 1])
             summary_between.write(f'{distance1} {distance2} \n')
             summary_between.flush()
-            distance_file = os.path.join(output_folder,"all_extrapolated_effective_size.txt")
-            distances  = np.loadtxt(distance_file)
+            distance_file = os.path.join(output_folder,"within_population_coalescence_time.txt")
+            distances  = np.loadtxt(distance_file, skiprows = 1)
             effective_size_1 = np.mean(distances[:,1])
             effective_size_2 = np.mean(distances[:, 2])
             summary_within.write(f'{effective_size_1} {effective_size_2} \n')

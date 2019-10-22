@@ -9,15 +9,14 @@ import matplotlib.animation as animation
 plt.rcParams.update({'font.size': 14})
 prop_cycle = plt.rcParams['axes.prop_cycle']
 colors = np.array(prop_cycle.by_key()['color'])
-simulation_subfolder = "../../../Desktop/medeas_1000_genome/"
-pop_name = "all_pop"
-simulation_subsub_folder = os.path.join(simulation_subfolder,f"all/pop_all")
+simulation_subfolder = "../../mds_1000_genome/no_prunning/medeas/all/pop_all"
+label_subfolder = "../../mds_1000_genome/no_prunning/label/all"
 
 fig = plt.figure()
 print(os.getcwd())
 
 
-delta = pickle.load(open(os.path.join(simulation_subsub_folder, "asd_matrices", "p1.asd.data"), "rb"))
+delta = pickle.load(open(os.path.join(simulation_subfolder, "asd_matrices", "p1.asd.data"), "rb"))
 delta = delta
 def calc_mds(delta):
     N = len(delta)
@@ -36,7 +35,7 @@ def calc_mds(delta):
 lambdas,vecs = calc_mds(delta)
 
 
-with open(os.path.join(simulation_subfolder,f'label/all/pop_all_haplo.lab'),"rb") as f:
+with open(os.path.join(label_subfolder,f'pop_all_haplo.lab'),"rb") as f:
     lines = f.readlines()
 labels = [l.split()[0] for l in lines]
 labels = np.array(labels,dtype=str)
@@ -44,20 +43,12 @@ populations, numerical_labels = np.unique(labels, return_inverse=True)
 order = np.argsort(-lambdas)
 nb_individuals = len(lambdas)
 ind_colors = colors[numerical_labels]
-p = range(0,5)
-for individual in range(nb_individuals):
-    if not (labels[individual] =="CEU" or labels[individual] =="TSI"):
-        plt.plot(p, np.sqrt(lambdas[order[p]])*vecs[individual,order[p]],c = ind_colors[individual])
-for individual in range(nb_individuals):
-    if (labels[individual] =="CEU" or labels[individual] =="TSI"):
-        plt.plot(p, np.sqrt(lambdas[order[p]])*vecs[individual,order[p]],c = ind_colors[individual])
-plt.show()
-plt.cla()
+
 
 populations = ['LWK', "YRI", 'CHB', 'JPT', 'TSI','CEU']
 
 order = np.argsort(-lambdas)
-print(populations)
+
 def plot_axis(p, q):
     plt.figure(figsize=(8,8))
     for index_population, population in enumerate(populations):
@@ -70,16 +61,15 @@ def plot_axis(p, q):
                     c=colors[index_population], alpha=0.5, label=population)
     plt.xticks([])
     plt.yticks([])
-    #plt.legend(loc='upper center', bbox_to_anchor=(.25, 1.05), ncol=3)
     plt.legend()
     plt.xlabel(f"PC {p+1}")
     plt.ylabel(f"PC {q + 1}")
-    plt.savefig(f"MDS_{p+1}_{q+1}.pdf")
+    plt.savefig(f"figure/MDS_{p+1}_{q+1}.pdf")
     plt.cla()
 
 plot_axis(0,1)
 plot_axis(2,3)
-plot_axis(4,5)
+
 symbol = ["*","+","^","_"]
 def plot_axis_lighter(p, q):
     plt.figure(figsize=(8,8))
@@ -98,13 +88,9 @@ def plot_axis_lighter(p, q):
                         c=colors[index_population], alpha=0.5, label=population)
     plt.xticks([])
     plt.yticks([])
-    #plt.legend(loc='upper center', bbox_to_anchor=(.25, 1.05), ncol=3)
     plt.legend()
     plt.xlabel(f"PC {p+1}")
     plt.ylabel(f"PC {q + 1}")
-    plt.savefig(f"MDS_{p+1}_{q+1}.pdf")
+    plt.savefig(f"figure/MDS_{p+1}_{q+1}.pdf")
     plt.cla()
 plot_axis_lighter(4,5)
-plot_axis_lighter(6,7)
-plot_axis_lighter(8,9)
-plot_axis_lighter(10,11)
