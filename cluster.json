@@ -1,0 +1,14 @@
+{
+    "__default__":
+    {
+        "account": "amalaspi_popgen",
+        "partition": "ax-normal",
+        "mem": "20G",
+        "cpus": "5",
+        "name": "{rule}.{wildcards}",
+        "time": "24:0:0",
+        "output": "logs/slurm/{rule}.{wildcards}.o",
+        "error": "logs/slurm/{rule}.{wildcards}.e"
+    }
+}
+
