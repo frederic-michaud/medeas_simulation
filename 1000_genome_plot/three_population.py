@@ -1,4 +1,5 @@
 import numpy as np
+import sys
 import matplotlib.pyplot as plt
 import os
 import pickle
@@ -7,9 +8,12 @@ import matplotlib.ticker as ticker
 plt.rcParams.update({'font.size': 14})
 prop_cycle = plt.rcParams['axes.prop_cycle']
 colors = np.array(prop_cycle.by_key()['color'])
-simulation_subfolder = "../../mds_1000_genome/no_prunning/medeas/triple/JPT_CHB_YRI"
-label_subfolder = "../../mds_1000_genome/no_prunning/label/triple"
-pop_name = "JPT_CHB_YRI"
+path_1000_genome = sys.argv[1]
+simulation_subfolder = os.path.join(path_1000_genome,
+"no_prunning/medeas/triple/YRI_JPT_CHB")
+label_subfolder = os.path.join(path_1000_genome,
+"no_prunning/label/triple")
+pop_name = "YRI_JPT_CHB"
 
 
 fig = plt.figure()
@@ -34,18 +38,18 @@ plt.ylabel("Dimension 2")
 plt.ylim((-0.01,0.01))
 plt.legend(["Han Chinese ","Japanese", "Yoruba"])
 
-fig.savefig("figure/JPT_CHB_YRI_mds.pdf")
+fig.savefig("figure/YRI_JPT_CHB_mds.pdf")
 
 fig = plt.figure()
 
 
 
-Ts = np.loadtxt(open(os.path.join(simulation_subfolder, "all_extrapolated_T.txt")))
-ts_between = np.loadtxt(open(os.path.join(simulation_subfolder, "all_extrapolated_distances.txt")))
-ts_within = np.loadtxt(open(os.path.join(simulation_subfolder, "all_extrapolated_effective_size.txt")))
-n1 = np.sum(labels == "JPT")
+Ts = np.loadtxt(open(os.path.join(simulation_subfolder, "all_T.txt")))
+ts_between = np.loadtxt(open(os.path.join(simulation_subfolder, "between_population_coalescence_time.txt")),skiprows = 1)
+ts_within = np.loadtxt(open(os.path.join(simulation_subfolder, "within_population_coalescence_time.txt")), skiprows = 1)
+n3 = np.sum(labels == "JPT")
 n2 = np.sum(labels == "CHB")
-n3 = np.sum(labels == "YRI")
+n1 = np.sum(labels == "YRI")
 
 ns = np.array([n1,n2,n3])
 n = np.sum(ns)
@@ -69,8 +73,8 @@ def make_b(ts: 'np.ndarray[int]') -> 'np.ndarray[float]':
 t11 = ts_within[0,0]
 t22 = ts_within[0,1]
 t33 = ts_within[0,2]
-t12 = ts_between[0,1]
-t13 = t23 = ts_between[0,0]
+t12 = t13 = ts_between[0,0]
+t23 = ts_between[0,1]
 ts = np.array([[t11,t12,t13],[t12,t22,t23],[t13,t23,t33]])
 b = make_b(ts)
 
@@ -79,7 +83,7 @@ vals, vecs = np.linalg.eigh(b)
 
 fig, (ax, ax2) = plt.subplots(2, 1, sharex=True, gridspec_kw={'height_ratios': [1, 2]})
 
-extrapolated_distance = t12 - (1+0.99684897)/2
+
 ax.plot(-np.sort(-val),"o",alpha = 0.5, label = "Real values")
 ax2.plot(-np.sort(-val),"o",alpha = 0.5)
 T = Ts[0]
@@ -90,6 +94,7 @@ format_small_analy.update(dict(markersize = 1, markeredgewidth = 1))
 format_large_analy = format_common.copy()
 format_large_analy.update(dict(markersize = 12, markeredgewidth = 2))
 ax.plot(0, -vals[0]*2/T**2,"_", label = "Analytical prediction",**format_large_analy)
+print(-vals[0]*2/T**2)
 ax2.plot(1, -vals[1]*2/T**2,"_", **format_large_analy)
 ax2.plot(n-1, 0, "_", **format_large_analy)
 all_large_eg = []
@@ -103,8 +108,8 @@ for bootstrap in range(0,101):
     t11 = ts_within[bootstrap,0]
     t22 = ts_within[bootstrap,1]
     t33 = ts_within[bootstrap,2]
-    t12 = ts_between[bootstrap,1]
-    t13 = t23 = ts_between[bootstrap,0]
+    t12 = t13 = ts_between[bootstrap,0]
+    t23 = ts_between[bootstrap,1]
     ts = np.array([[t11,t12,t13],[t12,t22,t23],[t13,t23,t33]])
     b = make_b(ts)
     vals, vecs = np.linalg.eigh(b)
@@ -113,17 +118,20 @@ all_large_eg = np.array(all_large_eg)
 
 larger_egs = -all_large_eg[:,0]*2/Ts**2
 lower_large_eg, upper_large_eg = get_95_interval(larger_egs)
-ax.errorbar(0,larger_egs[0] , yerr=([larger_egs[0]-upper_large_eg],[lower_large_eg-larger_egs[0]]), c = colors[2],elinewidth = 1,solid_capstyle='projecting', capsize=3)
+ax.errorbar(0,larger_egs[0] , yerr=([larger_egs[0]-upper_large_eg],[lower_large_eg-larger_egs[0]]),
+ c = colors[2],elinewidth = 1,solid_capstyle='projecting', capsize=3)
 
 smaller_egs = -all_large_eg[:,1]*2/Ts**2
+
 lower_small_eg, upper_small_eg = get_95_interval(smaller_egs)
-ax2.errorbar(1,larger_egs[1] , yerr=([larger_egs[1]-upper_small_eg],[lower_small_eg-larger_egs[1]]), c = colors[2],elinewidth = 1,solid_capstyle='projecting', capsize=3)
+ax2.errorbar(1,larger_egs[1] , yerr=([larger_egs[1]-upper_small_eg],[lower_small_eg-larger_egs[1]]),
+ c = colors[2],elinewidth = 1,solid_capstyle='projecting', capsize=3)
 
 
 
 offset = 2
-for index_pop in [2,0,1]:
-    end_pop = offset + ns[index_pop]-1
+for index_pop in [0,1,2]:
+    end_pop = offset + ns[index_pop] - 1
     ax2.plot(range(offset,end_pop),(ns[index_pop]-1)*[2*ts_within[0,index_pop]**2/T**2],**format_small_analy)
     offset = offset + ns[index_pop]
 
@@ -149,8 +157,8 @@ ax.legend()
 plt.xlabel("Eigenvalue index")
 fig.text(0.04, 0.5, 'Eigenvalue', ha='center', va='center', rotation='vertical')
 ax2.set_ylim(-0.001,0.018)
-ax.set_ylim(0.58,.7)
+ax.set_ylim(0.35,.5)
 
 
 fig.subplots_adjust(hspace=.025,left = 0.17)
-fig.savefig("figure/JPT_CHB_YRI_eigenvalue.pdf")
+fig.savefig("figure/YRI_JPT_CHB_eigenvalue.pdf")

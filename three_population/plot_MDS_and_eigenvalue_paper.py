@@ -75,7 +75,7 @@ plt.ylabel("Dimension 16")
 fig.savefig("figure/three_pop_mds.pdf")
 
 
-Ts = np.loadtxt(open(os.path.join(simulation_subsubfolder, "all_extrapolated_T.txt")))
+Ts = np.loadtxt(open(os.path.join(simulation_subsubfolder, "all_T.txt")))
 
 
 T = Ts[0]

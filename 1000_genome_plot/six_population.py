@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import os
 import pickle
+import sys
 import matplotlib.ticker as ticker
 import matplotlib.animation as animation
 
@@ -9,8 +10,9 @@ import matplotlib.animation as animation
 plt.rcParams.update({'font.size': 14})
 prop_cycle = plt.rcParams['axes.prop_cycle']
 colors = np.array(prop_cycle.by_key()['color'])
-simulation_subfolder = "../../mds_1000_genome/no_prunning/medeas/all/pop_all"
-label_subfolder = "../../mds_1000_genome/no_prunning/label/all"
+path_1000_genome = sys.argv[1]
+simulation_subfolder = os.path.join(path_1000_genome,"no_prunning/medeas/all/pop_all")
+label_subfolder = os.path.join(path_1000_genome,"no_prunning/label/all")
 
 fig = plt.figure()
 print(os.getcwd())

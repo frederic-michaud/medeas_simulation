@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import os
+import sys
 import pickle
 import scipy.optimize
 prop_cycle = plt.rcParams['axes.prop_cycle']
@@ -9,7 +10,7 @@ font = {'family' : 'normal',
         'size'   : 24}
 
 plt.rc('font', **font)
-
+location_1000_value = sys.argv[1]
 #%%
 
 def get_density_bound(T: float, L: float, N: int):
@@ -137,19 +138,19 @@ plot_mp_vs_histogram_reduce(val[1:], axes[0][0])
 
 
 #%%
-simulation_subfolder = "../../mds_1000_genome/random_prunning/medeas/single/YRI/"
+simulation_subfolder = os.path.join(location_1000_value,"random_prunning/medeas/single/YRI/")
 val, vec = pickle.load(open(os.path.join(simulation_subfolder, "MDS_eigensystem/p2.vecs.data"), "rb"))
 pp_random_prunning = get_pp_points(val[1:])
 plot_mp_vs_histogram_reduce(val[1:],  axes[1][1])
 
 #%%
-simulation_subfolder = "../../mds_1000_genome/plink_prunning/medeas/single/YRI/"
+simulation_subfolder = os.path.join(location_1000_value,"plink_prunning/medeas/single/YRI/")
 val, vec = pickle.load(open(os.path.join(simulation_subfolder, "MDS_eigensystem/p2.vecs.data"), "rb"))
 pp_plink_prunning = get_pp_points(val[1:])
 plot_mp_vs_histogram_reduce(val[1:],  axes[1][0])
 
 #%%
-simulation_subfolder = "../../mds_1000_genome/no_prunning/medeas/single/YRI/"
+simulation_subfolder = os.path.join(location_1000_value,"no_prunning/medeas/single/YRI/")
 val, vec = pickle.load(open(os.path.join(simulation_subfolder, "MDS_eigensystem/p2.vecs.data"), "rb"))
 pp_no_prunning = get_pp_points(val[1:])
 plot_mp_vs_histogram_reduce(val[1:],  axes[0][1])

@@ -1,14 +1,16 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import os
+import sys
 import pickle
 import matplotlib.ticker as ticker
 
 plt.rcParams.update({'font.size': 14})
 prop_cycle = plt.rcParams['axes.prop_cycle']
 colors = np.array(prop_cycle.by_key()['color'])
-simulation_subfolder = "../../mds_1000_genome/no_prunning/medeas/double/CHB_JPT"
-label_subfolder = "../../mds_1000_genome/no_prunning/label/double/"
+path_1000_genome = sys.argv[1]
+simulation_subfolder = os.path.join(path_1000_genome,"no_prunning/medeas/double/CHB_JPT")
+label_subfolder = os.path.join(path_1000_genome,"no_prunning/label/double")
 pop_name = "CHB_JPT"
 
 fig = plt.figure()
@@ -35,9 +37,9 @@ plt.legend(["Han Chinese ","Japanese"])
 fig.savefig("figure/JPT_CHB_mds.pdf")
 
 fig = plt.figure()
-Ts = np.loadtxt(open(os.path.join(simulation_subfolder, "all_extrapolated_T.txt")))
-t12 = np.loadtxt(open(os.path.join(simulation_subfolder, "all_extrapolated_distances.txt")))
-t11,t22 = np.transpose(np.loadtxt(open(os.path.join(simulation_subfolder, "all_extrapolated_effective_size.txt"))))
+Ts = np.loadtxt(open(os.path.join(simulation_subfolder, "all_T.txt")))
+t12 = np.loadtxt(open(os.path.join(simulation_subfolder, "between_population_coalescence_time.txt")),skiprows = 1)
+t11,t22 = np.transpose(np.loadtxt(open(os.path.join(simulation_subfolder, "within_population_coalescence_time.txt")),skiprows = 1))
 n1 = np.sum(labels == labels[0])
 n2 = np.sum(labels == labels[-1])
 n = n1 + n2

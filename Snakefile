@@ -9,7 +9,6 @@ populations = config["populations"] if "populations" in config.keys() else ["CEU
 all_pairs = []
 
 
-
 rule all:
     input:
         "figure/two_pop_constant_size_mds.pdf",
@@ -18,8 +17,8 @@ rule all:
         "figure/MDS_1_2.pdf",
         "figure/MDS_3_4.pdf",
         "figure/MDS_5_6.pdf",
-        "figure/JPT_CHB_YRI_mds.pdf",
-        "figure/JPT_CHB_YRI_eigenvalue.pdf",
+        "figure/YRI_JPT_CHB_mds.pdf",
+        "figure/YRI_JPT_CHB_eigenvalue.pdf",
         "figure/JPT_CHB_eigenvalues.pdf",
         "figure/JPT_CHB_mds.pdf",
         "figure/two_pop_constant_size_convergence_speed_L.pdf",
@@ -60,7 +59,7 @@ rule plot_marchenko_pastur:
         "figure/pp_plot_marchenko_pastur_fit.pdf",
         "figure/marchenko-pastur.pdf"
     shell:
-        "python 1000_genome_plot/marchenko-pastur-fit.py"
+        "python 1000_genome_plot/marchenko-pastur-fit.py {config[location_1000_value]}"
 
 
 
@@ -106,7 +105,7 @@ rule two_population_1000_genome_mds:
         "figure/JPT_CHB_eigenvalues.pdf",
         "figure/JPT_CHB_mds.pdf"
     shell:
-        "python 1000_genome_plot/two_population_constant_size.py"
+        "python 1000_genome_plot/two_population_constant_size.py  {config[location_1000_value]}"
 
 
 
@@ -143,10 +142,10 @@ rule three_population_simulation_mds_and_eigenvalue:
 
 rule three_population_1000_genome_mds:
     output:
-        "figure/JPT_CHB_YRI_mds.pdf",
-        "figure/JPT_CHB_YRI_eigenvalue.pdf"
+        "figure/YRI_JPT_CHB_mds.pdf",
+        "figure/YRI_JPT_CHB_eigenvalue.pdf"
     shell:
-        "python 1000_genome_plot/three_population.py"
+        "python 1000_genome_plot/three_population.py {config[location_1000_value]}"
 
 
 rule six_population_1000_genome_mds:
@@ -155,4 +154,4 @@ rule six_population_1000_genome_mds:
         "figure/MDS_3_4.pdf",
         "figure/MDS_5_6.pdf"
     shell:
-        "python 1000_genome_plot/six_population.py"
+        "python 1000_genome_plot/six_population.py {config[location_1000_value]}"
