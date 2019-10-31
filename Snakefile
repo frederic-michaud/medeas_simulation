@@ -16,6 +16,7 @@ rule all:
         "figure/three_pop_example_eigenvalue.pdf",
         "figure/three_pop_example_mds.pdf",
         "figure/three_pop_example_distance.pdf",
+        "figure/three_pop_example_eigenvector.pdf",
         "figure/MDS_1_2.pdf",
         "figure/MDS_3_4.pdf",
         "figure/MDS_5_6.pdf",
@@ -117,6 +118,7 @@ rule three_pop_example:
         "figure/three_pop_example_eigenvalue.pdf",
         "figure/three_pop_example_mds.pdf",
         "figure/three_pop_example_distance.pdf",
+        "figure/three_pop_example_eigenvector.pdf"
     shell:
         "python 1000_genome_plot/example_3pop.py"
 
