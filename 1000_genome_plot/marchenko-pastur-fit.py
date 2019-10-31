@@ -144,7 +144,7 @@ pp_random_prunning = get_pp_points(val[1:])
 plot_mp_vs_histogram_reduce(val[1:],  axes[1][1])
 
 #%%
-simulation_subfolder = os.path.join(location_1000_value,"plink_prunning/medeas/single/YRI/")
+simulation_subfolder = os.path.join(location_1000_value,"plink_pruning/medeas/single/YRI/")
 val, vec = pickle.load(open(os.path.join(simulation_subfolder, "MDS_eigensystem/p2.vecs.data"), "rb"))
 pp_plink_prunning = get_pp_points(val[1:])
 plot_mp_vs_histogram_reduce(val[1:],  axes[1][0])
