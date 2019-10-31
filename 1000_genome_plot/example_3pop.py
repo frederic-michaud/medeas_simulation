@@ -119,7 +119,7 @@ def plot_mds(coordinate, p, q, label_given, title = "mds.pdf"):
     fig, ax = plt.subplots(figsize=(8, 8))
     for population_index, population_name in enumerate(np.unique(label_given)):
         position_population = np.where(population_name == label_given)
-        color_value = colors[population_index]
+        color_value = colors[1:4][population_index]
         ax.scatter(coordinate.T[p, position_population].ravel(), coordinate.T[q, position_population].ravel(),
                    c=color_value, s=75, alpha=0.6)
     plt.legend(np.unique(label_given))
@@ -127,7 +127,7 @@ def plot_mds(coordinate, p, q, label_given, title = "mds.pdf"):
     for point in leg.legendHandles:
         point.set_color('black')
 
-    markers_color = [mlines.Line2D([], [], color=marker_color, marker="o", linestyle='None') for marker_color in colors]
+    markers_color = [mlines.Line2D([], [], color=marker_color, marker="o", linestyle='None') for marker_color in colors[1:4]]
     plt.legend(markers_color, np.unique(label_given), title="Population", bbox_to_anchor=(1.04, 0.5),
                loc="center left", borderaxespad=0)
 
