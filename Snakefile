@@ -30,7 +30,8 @@ rule all:
         "figure/three_pop_eigenvalue.pdf",
         "figure/pp_plot_marchenko_pastur_fit.pdf",
         "figure/marchenko-pastur.pdf",
-        "figure/mcvean_approximation.pdf"
+        "figure/mcvean_approximation.pdf",
+        "figure/6_pop_constant_size.pdf"
 
 rule simulate_mcvean_formula:
     output:
@@ -152,6 +153,20 @@ rule three_population_1000_genome_mds:
         "figure/YRI_JPT_CHB_eigenvalue.pdf"
     shell:
         "python 1000_genome_plot/three_population.py {config[location_1000_value]}"
+
+rule simulate_six_population_constant_size:
+    output:
+        directory("n_population/convergence_speed")
+    shell:
+        "python n_population/n_population.py"
+
+rule plot_six_population_constant_size:
+    input:
+        "n_population/convergence_speed"
+    output:
+        "figure/6_pop_constant_size.pdf"
+    shell:
+        "python n_population/plot_convergence_speed.py"
 
 
 rule six_population_1000_genome_mds:
