@@ -89,7 +89,7 @@ rule two_pop_simulate_given_parameter:
     output:
         directory("two_population/convergence_various_D/L_{L}_D_{D}")
     shell:
-        "python two_population/simulate_given_parameters.py {wildcards.L} {wildcards.D} > two_population/log_gp.txt"
+        "python two_population/simulate_given_parameters.py {wildcards.L} {wildcards.D}"
 
 rule two_pop_simulate_convergence_L:
     output:
@@ -156,7 +156,7 @@ rule three_pop_simulate_bottleneck:
     output:
         directory("three_population/convergence_bottleneck")
     shell:
-        "python three_population/three_population_bottleneck.py > three_population/log_bottleneck.txt"
+        "python three_population/three_population_bottleneck.py"
 
 rule three_population_plot_bottleneck:
     input:
