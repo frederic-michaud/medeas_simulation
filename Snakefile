@@ -31,7 +31,8 @@ rule all:
         "figure/pp_plot_marchenko_pastur_fit.pdf",
         "figure/marchenko-pastur.pdf",
         "figure/mcvean_approximation.pdf",
-        "figure/6_pop_constant_size.pdf"
+        "figure/6_pop_constant_size.pdf",
+        "figure/two_pop_different_ratio.pdf"
 
 rule simulate_mcvean_formula:
     output:
@@ -103,6 +104,20 @@ rule two_pop_plot_convergence_L:
         "figure/two_pop_constant_size_convergence_speed_L.pdf"
     shell:
         "python two_population/plot_various_L.py"
+
+rule two_pop_simulate_various_ratio:
+    output:
+        directory("two_population/convergence_various_sample_ratio")
+    shell:
+        "python two_population/simulate_different_ratio.py"
+
+rule two_pop_plot_various_ratio:
+    input:
+        "two_population/convergence_various_sample_ratio"
+    output:
+        "figure/two_pop_different_ratio.pdf"
+    shell:
+        "python two_population/plot_different_ratio.py"
 
 rule two_population_1000_genome_mds:
     output:
