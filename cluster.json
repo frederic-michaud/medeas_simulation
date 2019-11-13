@@ -2,11 +2,11 @@
     "__default__":
     {
         "account": "amalaspi_popgen",
-        "partition": "ax-normal",
+        "partition": "ax-long",
         "mem": "20G",
-        "cpus": "5",
+        "cpus": "1",
         "name": "{rule}.{wildcards}",
-        "time": "24:0:0",
+        "time": "48:0:0",
         "output": "logs/{rule}.{wildcards}.o",
         "error": "logs/{rule}.{wildcards}.e"
     }
