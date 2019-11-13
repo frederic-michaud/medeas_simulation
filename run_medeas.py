@@ -6,7 +6,7 @@ Created on Wed Sep 20 17:03:27 2017
 @author: ivan
 """
 
-medeas_exec = "/Users/fmichaud/medeas/main.py"
+medeas_exec = "/users/fmichaud1/medeas/main.py"
 
 from subprocess import Popen
 import sys
@@ -25,7 +25,8 @@ def run_medeas(medeas_exec: str,
                     '--output_folder',output_folder,
                     '-bws', bootsize,
                     '-bsn',bootstrapnumber,
-                    '--output_level','1'
+                    '--output_level','1',
+                    '--ncpus','1',
 #                    '--topology', '(2,(1,0));'
                     ])
     print(command)
