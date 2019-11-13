@@ -70,7 +70,7 @@ rule plot_marchenko_pastur:
 
 rule two_pop_eigenvalue:
     input:
-        directory("two_population/convergence_various_D/L_10000_D_0.1")
+        directory("two_population/convergence_given_parameter/L_10000_D_0.1")
     output:
         "figure/two_pop_constant_size_eigenvalue.pdf"
     shell:
@@ -78,7 +78,7 @@ rule two_pop_eigenvalue:
 
 rule two_pop_mds:
     input:
-        directory("two_population/convergence_various_D/L_10000_D_0.1")
+        directory("two_population/convergence_given_parameter/L_10000_D_0.1")
     output:
         "figure/two_pop_constant_size_mds.pdf"
     shell:
@@ -86,7 +86,7 @@ rule two_pop_mds:
 
 rule two_pop_simulate_given_parameter:
     output:
-        directory("two_population/convergence_various_D/L_{L}_D_{D}")
+        directory("two_population/convergence_given_parameter/L_{L}_D_{D}")
     shell:
         "python two_population/simulate_given_parameters.py {wildcards.L} {wildcards.D}"
 
