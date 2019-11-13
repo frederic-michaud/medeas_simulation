@@ -95,15 +95,29 @@ rule two_pop_simulate_convergence_L:
     output:
         directory("two_population/convergence_various_L")
     shell:
-        "python two_population/simulate_two_population.py > log_tpcl.txt"
+        "python two_population/simulate_two_population.py"
 
 rule two_pop_plot_convergence_L:
     input:
-        directory("two_population/convergence_various_L")
+        directory("two_population/convergence_various_D")
     output:
         "figure/two_pop_constant_size_convergence_speed_L.pdf"
     shell:
         "python two_population/plot_various_L.py"
+
+rule two_pop_simulate_convergence_D:
+    output:
+        directory("two_population/convergence_various_D")
+    shell:
+        "python two_population/convergence_various_D.py"
+
+rule two_pop_plot_convergence_D:
+    input:
+        directory("two_population/convergence_various_D")
+    output:
+        "figure/two_pop_different_D.pdf"
+    shell:
+        "python two_population/plot_various_D.py"
 
 rule two_pop_simulate_various_ratio:
     output:
