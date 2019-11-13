@@ -51,12 +51,12 @@ sample_size = 100
 n1s = np.linspace(2,20,19,dtype=int)
 current_folder = os.path.dirname(os.path.realpath(__file__))
 simulation_subfolder = "convergence_various_sample_ratio"
-if not os.path.exists(simulation_subfolder):
-    os.mkdir(simulation_subfolder)
+if not os.path.exists(os.path.join(current_folder, simulation_subfolder)):
+    os.mkdir(os.path.join(current_folder, simulation_subfolder))
 for n1 in n1s:
     n2 = 40 - n1
     for D in Ds:
-        distance_summary_file = os.path.join(simulation_subfolder,f'n1_{n1}_D_{D}.dat')
+        distance_summary_file = os.path.join(current_folder,simulation_subfolder,f'n1_{n1}_D_{D}.dat')
         summary_file = open(distance_summary_file,"w")
         for _ in range(sample_size):
 
