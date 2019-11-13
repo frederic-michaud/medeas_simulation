@@ -55,7 +55,7 @@ rule simulate_marchenko_pastur_single_population:
     output:
         directory("single_population/marchenko_pastur")
     shell:
-        "python single_population/marchenko_pastur.py > single_population/log_mp.txt"
+        "python single_population/marchenko_pastur.py"
 
 rule plot_marchenko_pastur:
     input:
@@ -65,7 +65,6 @@ rule plot_marchenko_pastur:
         "figure/marchenko-pastur.pdf"
     shell:
         "python 1000_genome_plot/marchenko-pastur-fit.py {config[location_1000_value]}"
-
 
 
 

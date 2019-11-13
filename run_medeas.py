@@ -6,7 +6,7 @@ Created on Wed Sep 20 17:03:27 2017
 @author: ivan
 """
 
-medeas_exec = "/users/fmichaud1/medeas/main.py"
+medeas_exec = "/Users/fmichaud/medeas/main.py"
 
 from subprocess import Popen
 import sys

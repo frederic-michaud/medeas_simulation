@@ -50,7 +50,7 @@ L = sys.argv[1]
 D = sys.argv[2]
 
 current_folder = os.path.dirname(os.path.realpath(__file__))
-simulation_subfolder = "convergence_various_D"
+simulation_subfolder = "convergence_given_parameter"
 result_subfolder_fullpath = os.path.join(current_folder,simulation_subfolder)
 
 

@@ -7,7 +7,7 @@ plt.rcParams.update({'font.size': 14})
 prop_cycle = plt.rcParams['axes.prop_cycle']
 colors = np.array(prop_cycle.by_key()['color'])
 main_folder = os.path.dirname(os.path.realpath(__file__))
-simulation_subfolder = "convergence_various_D"
+simulation_subfolder = "convergence_given_parameter"
 D = 0.1
 L = 10000
 simulation_subsub_folder = os.path.join(main_folder, simulation_subfolder,f"L_{L}_D_{D}")
