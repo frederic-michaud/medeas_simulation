@@ -149,7 +149,7 @@ rule three_pop_example:
         "figure/three_pop_example_distance.pdf",
         "figure/three_pop_example_eigenvector.pdf"
     shell:
-        "python 1000_genome_plot/example_3pop.py"
+        "python example/example_3pop.py"
 
 rule three_pop_simulate_bottleneck:
     output:
