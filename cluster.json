@@ -6,7 +6,7 @@
         "mem": "20G",
         "cpus": "1",
         "name": "{rule}.{wildcards}",
-        "time": "48:0:0",
+        "time": "144:0:0",
         "output": "logs/{rule}.{wildcards}.o",
         "error": "logs/{rule}.{wildcards}.e"
     }
