@@ -13,7 +13,7 @@ simulation_subfolder = "two_population/convergence_various_L"
 cwd = os.getcwd()
 simulation_subfolder = os.path.join(cwd, simulation_subfolder)
 Ls = [int(10 ** (i / 4)) for i in range(8, 21)]  # regulary space with 4 point between each order of magnitude
-D = 0.1
+D = 0.05
 all_distances1 = [[0, 0]]
 for L in Ls:
     distance_summary_file = f'two_population/convergence_various_L/L_{L}_D_{D}.dat'
@@ -38,7 +38,7 @@ print(all_dist.groupby('loci')['distance'].quantile(0.05))
 print(all_dist.groupby('loci')['distance'].quantile(0.95))
 ax.plot(range(len(Ls)),  mean_dist_by_L.values,"_",color = colors[0],markersize=7)
 plt.setp(ax.collections, alpha=.4)
-plt.axhline(y=1.1,color = colors[0],alpha = 0.5, label = r"$t_{1,2} = 1.1$")
+plt.axhline(y=1 + 2*D,color = colors[0],alpha = 0.5, label = r"$t_{1,2} = 1.1$")
 
 
 _,value = plt.xticks()

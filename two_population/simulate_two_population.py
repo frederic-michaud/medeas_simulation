@@ -49,7 +49,7 @@ current_folder = os.path.dirname(os.path.realpath(__file__))
 
 
 Ls = [int(10**(i/4)) for i in range(8, 21)] #regulary space with 4 point
-Ds = [0.1]
+Ds = [0.05]
 sample_size = 100
 current_folder = os.path.dirname(os.path.realpath(__file__))
 simulation_subfolder = "convergence_various_L"
