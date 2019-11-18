@@ -11,28 +11,53 @@ all_pairs = []
 
 rule all:
     input:
-        "figure/two_pop_constant_size_mds.pdf",
-        "figure/two_pop_constant_size_eigenvalue.pdf",
+        "example.done",
+        "simulation.done",
+        "1000_genome.done",
+        "mixed.done"
+
+rule example:
+    input:
         "figure/three_pop_example_eigenvalue.pdf",
         "figure/three_pop_example_mds.pdf",
         "figure/three_pop_example_distance.pdf",
-        "figure/three_pop_example_eigenvector.pdf",
+        "figure/three_pop_example_eigenvector.pdf"
+    output:
+        touch("example.done")
+
+rule simulation:
+    input:
+        "figure/two_pop_constant_size_mds.pdf",
+        "figure/two_pop_constant_size_eigenvalue.pdf",
+        "figure/two_pop_constant_size_convergence_speed_L.pdf",
+        "figure/mcvean_approximation.pdf",
+        "figure/6_pop_constant_size.pdf",
+        "figure/two_pop_different_ratio.pdf",
+        "figure/three_pop_t.pdf",
+        "figure/three_pop_mds.pdf",
+        "figure/three_pop_eigenvalue.pdf"
+    output:
+        touch("simulation.done")
+
+rule thousand_genome:
+    input:
         "figure/MDS_1_2.pdf",
         "figure/MDS_3_4.pdf",
         "figure/MDS_5_6.pdf",
         "figure/YRI_JPT_CHB_mds.pdf",
         "figure/YRI_JPT_CHB_eigenvalue.pdf",
         "figure/JPT_CHB_eigenvalues.pdf",
-        "figure/JPT_CHB_mds.pdf",
-        "figure/two_pop_constant_size_convergence_speed_L.pdf",
-        "figure/three_pop_t.pdf",
-        "figure/three_pop_mds.pdf",
-        "figure/three_pop_eigenvalue.pdf",
+        "figure/JPT_CHB_mds.pdf"
+    output:
+        touch("1000_genome.done")
+
+rule mixed:
+    input:
         "figure/pp_plot_marchenko_pastur_fit.pdf",
         "figure/marchenko-pastur.pdf",
-        "figure/mcvean_approximation.pdf",
-        "figure/6_pop_constant_size.pdf",
-        "figure/two_pop_different_ratio.pdf"
+    output:
+        touch("mixed.done")
+
 
 rule simulate_mcvean_formula:
     output:
@@ -98,7 +123,7 @@ rule two_pop_simulate_convergence_L:
 
 rule two_pop_plot_convergence_L:
     input:
-        directory("two_population/convergence_various_D")
+        directory("two_population/convergence_various_L")
     output:
         "figure/two_pop_constant_size_convergence_speed_L.pdf"
     shell:
