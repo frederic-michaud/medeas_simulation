@@ -35,16 +35,17 @@ def make_b(ts: 'np.ndarray[int]') -> 'np.ndarray[float]':
     return b
 
 #alpha is the first split and beta the second one
-
-D1 = 0.05
-D2 = 0.1
+alpha = 0.2
+beta = 0.1
+D_beta = 0.05
+D_alpha = 0.1
 
 t11 = 1
-t22 = 1
-t33 = 1
+t22 = alpha + np.exp(-D_alpha/alpha)*(1-alpha)
+t33 = beta + np.exp(-D_alpha/alpha - D_beta/beta)*(1 - alpha + np.exp(D_alpha/alpha)*(alpha-beta))
 
-t23 = 1 + D1
-t13 = t12 = 1 + D2
+t23 = D_beta + alpha + np.exp(-(D_alpha-D_beta)/alpha)*(1-alpha)
+t13 = t12 = 1 + D_alpha
 ts = np.array([[t11,t12,t13],[t12,t22,t23],[t13,t23,t33]])
 print(ts)
 b = make_b(ts)
@@ -60,7 +61,7 @@ plt.plot(n,0,label = "Constant eigenvector",**args_plot)
 plt.xlabel("Eigenvalue index")
 plt.ylabel("Eigenvalue")
 plt.legend()
-fig.savefig("figure/three_pop_const_example_eigenvalue.pdf")
+fig.savefig("figure/three_pop_varying_Ne_example_eigenvalue.pdf")
 
 
 
@@ -88,7 +89,7 @@ def get_dist(i, j, ns):
     elif (pop_i == 1 and pop_j == 2) or (pop_i == 2 and pop_j == 1):
         distance = t23
     else:
-        distance = t12
+        distance = t13
 
     return distance
 
@@ -140,10 +141,10 @@ label_given = np.repeat(label_pop, ns)
 nb_individual =np.sum(ns)
 distance_matrix = np.array([[get_dist(i, j, ns) for i in range(nb_individual)] for j in range(nb_individual)])
 eigenvalue, eigenvector = calc_mds(distance_matrix)
-plot_mds(eigenvector, 0, 1, label_given, "figure/three_pop_const_example_mds.pdf")
+plot_mds(eigenvector, 0, 1, label_given, "figure/three_pop_varying_Ne_example_mds.pdf")
 fig, ax = plt.subplots(figsize=(8, 8))
-color_panel = list(zip([0, t11/t13, t23/t13, t13/t13],
-                       ["#ffffff"+"99", colors[2]+"99", colors[1]+"99",colors[0]+"99"]))
+color_panel = list(zip([0,t33/t13,t22/t13,t23/t13,t11/t13,1],
+                       ["#ffffff"+"99", colors[3]+"99", colors[2]+"99", colors[4]+"99",colors[1]+"99",colors[0]+"99"]))
 my_colors = plt_colors.LinearSegmentedColormap.from_list("hello",color_panel)
 
 plt.imshow(distance_matrix, my_colors)
@@ -178,7 +179,7 @@ for index_position in range(len(start_position) - 1):
              horizontalalignment='right',
              )
 
-plt.savefig("figure/three_pop_const_example_distance.pdf")
+plt.savefig("figure/three_pop_varying_Ne_example_distance.pdf")
 
 
 plt.figure(figsize=(8, 8))
@@ -195,4 +196,4 @@ plt.xlabel("eigenvector index")
 plt.ylabel("individual")
 cbar = plt.colorbar()
 cbar.ax.set_ylabel("Eigenvector component", rotation=-90, va="bottom")
-plt.savefig("figure/three_pop_const_example_eigenvector.pdf")
+plt.savefig("figure/three_pop_varying_Ne_example_eigenvector.pdf")

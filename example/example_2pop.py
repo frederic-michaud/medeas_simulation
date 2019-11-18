@@ -129,7 +129,7 @@ label_given = np.repeat(label_pop, ns)
 nb_individual =np.sum(ns)
 distance_matrix = np.array([[get_dist(i, j, ns) for i in range(nb_individual)] for j in range(nb_individual)])
 eigenvalue, eigenvector = calc_mds(distance_matrix)
-plot_mds(eigenvector, 0, 1, label_given, "figure/three_pop_example_mds.pdf")
+plot_mds(eigenvector, 0, 1, label_given, "figure/two_pop_example_mds.pdf")
 fig, ax = plt.subplots(figsize=(8, 8))
 color_panel = list(zip([0,t11/t12,t12/t12],
                        ["#ffffff"+"99", colors[3]+"99", colors[2]+"99", colors[4]+"99",colors[1]+"99",colors[0]+"99"]))
@@ -169,19 +169,3 @@ for index_position in range(len(start_position) - 1):
 
 plt.savefig("figure/two_pop_example_distance.pdf")
 
-
-plt.figure(figsize=(8, 8))
-max_eg = np.max(eigenvector)
-min_eg = np.min(eigenvector)
-position_0 = -min_eg/(max_eg - min_eg)
-print(position_0)
-color_panel = list(zip([0,0.1,position_0,0.9,1],
-                       [colors[1],colors[0],"#ffffff",colors[2],colors[3]]))
-
-my_colors = plt_colors.LinearSegmentedColormap.from_list("hello",color_panel)
-plt.imshow(eigenvector, my_colors)
-plt.xlabel("eigenvector index")
-plt.ylabel("individual")
-cbar = plt.colorbar()
-cbar.ax.set_ylabel("Eigenvector component", rotation=-90, va="bottom")
-plt.savefig("figure/two_pop_example_eigenvector.pdf")

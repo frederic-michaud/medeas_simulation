@@ -14,9 +14,9 @@ fig = plt.figure()
 
 
 
-ns = np.array([10,8,6])
+ns = np.array([10,8,6,4])
 n = np.sum(ns)
-npop = 3
+npop = 4
 
 def make_b(ts: 'np.ndarray[int]') -> 'np.ndarray[float]':
     """Make the B-matrix (see paper for details)."""
@@ -34,33 +34,39 @@ def make_b(ts: 'np.ndarray[int]') -> 'np.ndarray[float]':
                 b[i, j] = (ns[i] - 1) * ts[i, j] ** 2 - ns[i] * (2 * delta[i] - delta_0)
     return b
 
-#alpha is the first split and beta the second one
+#We separate 1 with 234 at D3,
+#            2 with 34 at D2
+#            3 with 4 at D1
 
-D1 = 0.05
-D2 = 0.1
+D1 = 0.1
+D2 = 0.2
+D3 = 0.3
 
 t11 = 1
 t22 = 1
 t33 = 1
+t44 = 1
 
-t23 = 1 + D1
-t13 = t12 = 1 + D2
-ts = np.array([[t11,t12,t13],[t12,t22,t23],[t13,t23,t33]])
+t12 = t13 = t14 =  1 + D3
+t23 = t24 = 1 + D2
+t34 = 1 + D1
+ts = np.array([[t11,t12,t13,t14],[t12,t22,t23,t24],[t13,t23,t33, t34],[t14,t24,t34,t44]])
 print(ts)
 b = make_b(ts)
 
 vals, vecs = np.linalg.eigh(b)
 vals = -2*vals
 args_plot = {"marker" : "o","alpha" : 0.5,"linestyle" : 'None'}
-plt.plot((1,2),(vals[0],vals[1]),label = "Between populations",**args_plot)
-plt.plot(range(3,2 + ns[0]),np.full(ns[0]-1,t11**2),label = "Within first population",**args_plot)
-plt.plot(range(2 + ns[0],1 + ns[0] + ns[1]),np.full(ns[1]-1,t22**2),label = "Within second population",**args_plot)
-plt.plot(range(1 + ns[0] + ns[1],n),np.full(ns[2]-1,t33**2),label = "Within third population",**args_plot)
+plt.plot((1,2,3),(vals[0],vals[1],vals[2]),label = "Between populations",**args_plot)
+plt.plot(range(4,3 + ns[0]),np.full(ns[0]-1,t11**2),label = "Within first population",**args_plot)
+plt.plot(range(3 + ns[0],2 + ns[0] + ns[1]),np.full(ns[1]-1,t22**2),label = "Within second population",**args_plot)
+plt.plot(range(2 + ns[0] + ns[1], 1 + ns[0] + ns[1] + ns[2]),np.full(ns[2]-1,t33**2),label = "Within third population",**args_plot)
+plt.plot(range(1 + ns[0] + ns[1] + ns[2],n),np.full(ns[3]-1,t44**2),label = "Within fourth population",**args_plot)
 plt.plot(n,0,label = "Constant eigenvector",**args_plot)
 plt.xlabel("Eigenvalue index")
 plt.ylabel("Eigenvalue")
 plt.legend()
-fig.savefig("figure/three_pop_example_eigenvalue.pdf")
+fig.savefig("figure/four_pop_clip_example_eigenvalue.pdf")
 
 
 
@@ -75,21 +81,8 @@ def get_dist(i, j, ns):
     pop_i = get_index(i, ns)
     pop_j = get_index(j, ns)
     distance = 0
-    if i==j:
-        distance = 0
-    elif pop_i == pop_j:
-        if pop_i == 0:
-            distance = t11
-        if pop_i == 1:
-            distance = t22
-        if pop_i == 2:
-            distance = t33
-
-    elif (pop_i == 1 and pop_j == 2) or (pop_i == 2 and pop_j == 1):
-        distance = t23
-    else:
-        distance = t12
-
+    if not i==j:
+        distance = ts[pop_i,pop_j]
     return distance
 
 
@@ -118,7 +111,7 @@ def plot_mds(coordinate, p, q, label_given, title = "mds.pdf"):
     fig, ax = plt.subplots(figsize=(8, 8))
     for population_index, population_name in enumerate(np.unique(label_given)):
         position_population = np.where(population_name == label_given)
-        color_value = colors[1:4][population_index]
+        color_value = colors[1:5][population_index]
         ax.scatter(coordinate.T[p, position_population].ravel(), coordinate.T[q, position_population].ravel(),
                    c=color_value, s=75, alpha=0.6)
     plt.legend(np.unique(label_given))
@@ -126,7 +119,7 @@ def plot_mds(coordinate, p, q, label_given, title = "mds.pdf"):
     for point in leg.legendHandles:
         point.set_color('black')
 
-    markers_color = [mlines.Line2D([], [], color=marker_color, marker="o", linestyle='None') for marker_color in colors[1:4]]
+    markers_color = [mlines.Line2D([], [], color=marker_color, marker="o", linestyle='None') for marker_color in colors[1:5]]
     plt.legend(markers_color, np.unique(label_given), title="Population", bbox_to_anchor=(1.04, 0.5),
                loc="center left", borderaxespad=0)
 
@@ -135,15 +128,15 @@ def plot_mds(coordinate, p, q, label_given, title = "mds.pdf"):
     fig.savefig(title,bbox_inches="tight")
     plt.close()
 
-label_pop = ["pop 1","pop 2","pop 3"]
+label_pop = ["pop 1","pop 2","pop 3","pop 4"]
 label_given = np.repeat(label_pop, ns)
 nb_individual =np.sum(ns)
 distance_matrix = np.array([[get_dist(i, j, ns) for i in range(nb_individual)] for j in range(nb_individual)])
 eigenvalue, eigenvector = calc_mds(distance_matrix)
-plot_mds(eigenvector, 0, 1, label_given, "figure/three_pop_example_mds.pdf")
+plot_mds(eigenvector, 0, 1, label_given, "figure/four_pop_clip_example_mds.pdf")
 fig, ax = plt.subplots(figsize=(8, 8))
-color_panel = list(zip([0, t11/t13, t23/t13, t13/t13],
-                       ["#ffffff"+"99", colors[2]+"99", colors[1]+"99",colors[0]+"99"]))
+color_panel = list(zip([0, t11/t13, t34/t13, t12/t13, t13/t13],
+                       ["#ffffff"+"99", colors[2]+"99", colors[1]+"99",colors[3]+"99",colors[0]+"99"]))
 my_colors = plt_colors.LinearSegmentedColormap.from_list("hello",color_panel)
 
 plt.imshow(distance_matrix, my_colors)
@@ -178,4 +171,5 @@ for index_position in range(len(start_position) - 1):
              horizontalalignment='right',
              )
 
-plt.savefig("figure/three_pop_example_distance.pdf")
+plt.savefig("figure/four_pop_clip_example_distance.pdf")
+

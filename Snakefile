@@ -18,10 +18,22 @@ rule all:
 
 rule example:
     input:
+        "figure/two_pop_example_eigenvalue.pdf",
+        "figure/two_pop_example_mds.pdf",
+        "figure/two_pop_example_distance.pdf",
         "figure/three_pop_example_eigenvalue.pdf",
         "figure/three_pop_example_mds.pdf",
         "figure/three_pop_example_distance.pdf",
-        "figure/three_pop_example_eigenvector.pdf"
+        "figure/three_pop_varying_Ne_example_eigenvalue.pdf",
+        "figure/three_pop_varying_Ne_example_mds.pdf",
+        "figure/three_pop_varying_Ne_example_distance.pdf",
+        "figure/three_pop_varying_Ne_example_eigenvector.pdf",
+        "figure/four_pop_clip_example_eigenvalue.pdf",
+        "figure/four_pop_clip_example_mds.pdf",
+        "figure/four_pop_clip_example_distance.pdf",
+        "figure/four_pop_symetric_example_eigenvalue.pdf",
+        "figure/four_pop_symetric_example_mds.pdf",
+        "figure/four_pop_symetric_example_distance.pdf",
     output:
         touch("example.done")
 
@@ -157,6 +169,14 @@ rule two_pop_plot_various_ratio:
     shell:
         "python two_population/plot_different_ratio.py"
 
+rule two_pop_example:
+    output:
+        "figure/two_pop_example_eigenvalue.pdf",
+        "figure/two_pop_example_mds.pdf",
+        "figure/two_pop_example_distance.pdf"
+    shell:
+        "python example/example_2pop.py"
+
 rule two_population_1000_genome_mds:
     output:
         "figure/JPT_CHB_eigenvalues.pdf",
@@ -165,16 +185,21 @@ rule two_population_1000_genome_mds:
         "python 1000_genome_plot/two_population_constant_size.py  {config[location_1000_value]}"
 
 
-
-
-rule three_pop_example:
+rule three_pop_example_constant_Ne:
     output:
         "figure/three_pop_example_eigenvalue.pdf",
         "figure/three_pop_example_mds.pdf",
-        "figure/three_pop_example_distance.pdf",
-        "figure/three_pop_example_eigenvector.pdf"
+        "figure/three_pop_example_distance.pdf"
     shell:
         "python example/example_3pop.py"
+rule three_pop_example_varying_Ne:
+    output:
+        "figure/three_pop_varying_Ne_example_eigenvalue.pdf",
+        "figure/three_pop_varying_Ne_example_mds.pdf",
+        "figure/three_pop_varying_Ne_example_distance.pdf",
+        "figure/three_pop_varying_Ne_example_eigenvector.pdf"
+    shell:
+        "python example/example_3pop_various_Ne.py"
 
 rule three_pop_simulate_bottleneck:
     output:
@@ -206,6 +231,27 @@ rule three_population_1000_genome_mds:
         "figure/YRI_JPT_CHB_eigenvalue.pdf"
     shell:
         "python 1000_genome_plot/three_population.py {config[location_1000_value]}"
+
+
+
+
+rule four_pop_example_clip:
+    output:
+        "figure/four_pop_clip_example_eigenvalue.pdf",
+        "figure/four_pop_clip_example_mds.pdf",
+        "figure/four_pop_clip_example_distance.pdf"
+    shell:
+        "python example/example_4_pop_clip.py"
+
+rule four_pop_example_symetric:
+    output:
+        "figure/four_pop_symetric_example_eigenvalue.pdf",
+        "figure/four_pop_symetric_example_mds.pdf",
+        "figure/four_pop_symetric_example_distance.pdf"
+    shell:
+        "python example/example_4_pop_symetric.py"
+
+
 
 rule simulate_six_population_constant_size:
     output:
