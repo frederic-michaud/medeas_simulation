@@ -1,3 +1,4 @@
+name: mds_simulate
 channels:
     - conda-forge
     - bioconda
