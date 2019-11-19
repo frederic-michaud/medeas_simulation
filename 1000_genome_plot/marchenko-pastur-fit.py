@@ -138,7 +138,7 @@ plot_mp_vs_histogram_reduce(val[1:], axes[0][0])
 
 
 #%%
-simulation_subfolder = os.path.join(location_1000_value,"random_prunning/medeas/single/YRI/")
+simulation_subfolder = os.path.join(location_1000_value,"random_pruning/medeas/single/YRI/")
 val, vec = pickle.load(open(os.path.join(simulation_subfolder, "MDS_eigensystem/p2.vecs.data"), "rb"))
 pp_random_prunning = get_pp_points(val[1:])
 plot_mp_vs_histogram_reduce(val[1:],  axes[1][1])
@@ -159,7 +159,7 @@ fig.text(0.03, 0.5, 'Eigenvalue density', va='center', rotation='vertical')
 #plt.show()
 plt.savefig("figure/marchenko-pastur.pdf")
 #%% Plotting pp value plot
-plt.figure()
+plt.figure(figsize=(12,9))
 plt.plot(pp_simulation, np.linspace(0,1,num= len(pp_simulation)),label = "Simulated value")
 plt.plot(pp_no_prunning, np.linspace(0,1,num= len(pp_no_prunning)), label = " No prunning")
 plt.plot(pp_plink_prunning, np.linspace(0,1,num= len(pp_plink_prunning)), label = "Plink prunning")
