@@ -98,6 +98,6 @@ plt.xlabel(r"$L$")
 plt.ylabel("Split time")
 plt.xticks(range(len(Ls))[::2],["1,000", "3,163", "10,000", "31,622","100,000"])
 
-fig.savefig("figure/n_pop.pdf")
+fig.savefig("figure/6_pop_constant_size.pdf")
 
 fig = plt.figure()
