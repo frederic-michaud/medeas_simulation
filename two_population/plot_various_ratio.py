@@ -72,8 +72,8 @@ for n1 in n1s:
     projection = np.loadtxt(mds_projection)
     pop = np.array(n1*[0] +  (40-n1)*[1])
     col = colors[pop]
-    ax.scatter(np.full(len(projection[:,0]), n1-2),-projection[:, 0]*np.sign(projection[0,0]),c = col, s=75, alpha = 0.6)
-markers_color = [mlines.Line2D([], [], color=marker_color, marker="o", linestyle='None', alpha = 0.6) for marker_color in colors]
+    ax.scatter(np.full(len(projection[:,0]), n1-2),-projection[:, 0]*np.sign(projection[0,0]),c = col, s=75, alpha = 0.6,marker="_")
+markers_color = [mlines.Line2D([], [], color=marker_color, marker="_", linestyle='None', alpha = 0.6) for marker_color in colors]
 ax.legend(markers_color, ["Pop. 1", "Pop. 2"])
 ax.set_xticks(np.linspace(-2,18,11,dtype=int))
 ax.set_xticklabels([ a+"%" for a in np.linspace(0,50,11,dtype=int).astype(str)])

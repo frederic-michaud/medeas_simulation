@@ -41,7 +41,10 @@ rule simulation:
     input:
         "figure/two_pop_constant_size_mds.pdf",
         "figure/two_pop_constant_size_eigenvalue.pdf",
+        "figure/two_pop_constant_size_convergence_speed_D.pdf",
+        "figure/two_pop_constant_size_convergence_speed_n.pdf",
         "figure/two_pop_constant_size_convergence_speed_L.pdf",
+        "figure/two_pop_different_ratio.pdf",
         "figure/mcvean_approximation.pdf",
         "figure/6_pop_constant_size.pdf",
         "figure/two_pop_different_ratio.pdf",
@@ -151,9 +154,23 @@ rule two_pop_plot_convergence_D:
     input:
         directory("two_population/convergence_various_D")
     output:
-        "figure/two_pop_different_D.pdf"
+        "figure/two_pop_constant_size_convergence_speed_D.pdf"
     shell:
         "python two_population/plot_various_D.py"
+
+rule two_pop_simulate_convergence_n:
+    output:
+        directory("two_population/convergence_various_n")
+    shell:
+        "python two_population/convergence_various_n.py"
+
+rule two_pop_plot_convergence_n:
+    input:
+        directory("two_population/convergence_various_n")
+    output:
+        "figure/two_pop_constant_size_convergence_speed_n.pdf"
+    shell:
+        "python two_population/plot_various_n.py"
 
 rule two_pop_simulate_various_ratio:
     output:
@@ -167,7 +184,7 @@ rule two_pop_plot_various_ratio:
     output:
         "figure/two_pop_different_ratio.pdf"
     shell:
-        "python two_population/plot_different_ratio.py"
+        "python two_population/plot_various_ratio.py"
 
 rule two_pop_example:
     output:
